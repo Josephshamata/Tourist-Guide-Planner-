@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  /* Core */
+  --color-primary: #7c2d12;
+
+  /* Match the HTML look (more neutral/grey background) */
+  --color-background-light: #FFFFFF; /* instead of #FDFBF7 */
+
+  /* Surfaces */
+  --color-surface: #ffffff;
+  --color-surface-soft: #eef0f3;
+
+  /* Text */
+  --color-ink: #000000;     /* strong readable text */
+  --color-muted: #64748b;   /* labels */
+  --color-faint: #94a3b8;   /* helper text */
+
+  /* Controls */
+  --color-navy: #0b1020;    /* the dark select background like screenshot */
+  --color-border: #cbd5e1;
+}
+/* ===== RANGE SLIDER RESET (Fix Purple Issue) ===== */
+
+.custom-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Track - Chrome / Safari */
+.custom-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
+/* Thumb - Chrome / Safari */
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 22px;
+  width: 22px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 5px solid #ffffff; /* white ring */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  margin-top: -8px; /* centers thumb on 6px track */
+  cursor: pointer;
+}
+
+/* Thumb - Firefox */
+.custom-slider::-moz-range-thumb {
+  height: 22px;
+  width: 22px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 5px solid #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+/* Track - Firefox */
+.custom-slider::-moz-range-track {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
