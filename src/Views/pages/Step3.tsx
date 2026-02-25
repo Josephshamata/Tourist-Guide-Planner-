@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import StepHeader from "../components/StepHeader";
-
 
 type MusicOption = {
   id: string;
@@ -107,7 +106,7 @@ export default function Step3() {
           "https://lh3.googleusercontent.com/aida-public/AB6AXuB9quBpPefSBXf0jGiwYekjIbXLyQg1OC5BvprCjRWZez03syMFPNwqIJkUP0PtJRgrbqyLHn_bCao9zT7hfA19LK57SOg4MDzl-AXu95hsGn1H8jhvt3lTSFeiV5BKa-ej9vwBGqtkXxCuFGhzL_A2Oi9YBbpVmzRerevCxTa0qQyH1g03htYGnMkEs1IZzKc0MGTNBJVqszQIxU9Q7I3NDuwJi8UdUaDr-ZQzmC-s93BBD90scfvYPSJz99yIKVSZKasS9tAWgVcB",
       },
     ],
-    []
+    [],
   );
 
   // Default selected in the HTML: Techno + Jazz
@@ -115,7 +114,7 @@ export default function Step3() {
 
   const toggle = (id: string) => {
     setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 
@@ -166,7 +165,9 @@ export default function Step3() {
                 <div className="bg-primary/5 rounded-xl border border-primary/10 p-6 mb-24">
                   <div className="flex items-start gap-4">
                     <div className="bg-primary/10 p-3 rounded-full flex items-center justify-center text-primary">
-                      <span className="material-symbols-outlined">lightbulb</span>
+                      <span className="material-symbols-outlined">
+                        lightbulb
+                      </span>
                     </div>
 
                     <div>

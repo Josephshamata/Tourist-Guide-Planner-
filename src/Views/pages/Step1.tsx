@@ -1,9 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import StepHeader from "../components/StepHeader";
 import TravelPartyCard from "../components/TravelPartyCard";
-
 
 type TravelParty = "solo" | "friends" | "family" | "romantic";
 type AgeRange = "18-25" | "26-35" | "36-45" | "46-55" | "55+";
@@ -46,7 +45,7 @@ export default function Step1() {
           "https://lh3.googleusercontent.com/aida-public/AB6AXuBllaLz90cwsxbr3qbSGbB3du85Mu4lnjUIFFqVuWbhx_kh5Zw347roMb4butEBWrhC-WNHhJcx2J-YeYooBb8gwRuZX5ikGad1tlpIxMRMNYZCPj5LxHX0UG7vUqP_dCw7SVr34pKEWhcaAKUulqdJ3qmBMuz_s0GcjeayxCNpkvQxEK5NwG6zIVP3PLnevmhA3yV0p_OgKsCBfdSelcGTOMpYn_kVPPawgv6297wusvu9w-2XuMdZwCotg5d2xlBZT5TEYEmyzfa-",
       },
     ],
-    []
+    [],
   );
 
   const ageButtons: AgeRange[] = ["18-25", "26-35", "36-45", "46-55", "55+"];
@@ -223,8 +222,8 @@ export default function Step1() {
                   </h4>
                   <p className="max-w-2xl leading-relaxed text-muted">
                     Lebanon is one of the few places in the world where you can
-                    ski in the mountains and swim in the Mediterranean sea on the
-                    same day during the spring months of March and April.
+                    ski in the mountains and swim in the Mediterranean sea on
+                    the same day during the spring months of March and April.
                   </p>
                 </div>
               </section>

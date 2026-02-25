@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import StepHeader from "../components/StepHeader";
-
 
 type FoodCard = {
   id: string;
@@ -143,7 +142,7 @@ export default function Step4() {
           "https://lh3.googleusercontent.com/aida-public/AB6AXuDPURHOvZtM9ivBcqpFD8vLydAiDVXFO10ohVWSaLjlhi8thCDCv4ZMwWpNwWw5o0UL9FYGa4KUNfvUpLMxmQFoW6sqamdTBlV9CjS5ZjYCb5yFV9X0iErL-3XNeWrYZtrav4UJTDwy6Xd_nR9MJlPSjJPGSYxxjDYGO9sFz-6o_h2fysFlNLON56Wywhl_4z9PP5pefk-e0i928Z7RDEgqYebe51BVjoYe29uMnaXpcZ2MU5otht8YzbOM2g1DMKJbM2C5UlKIA-Ok",
       },
     ],
-    []
+    [],
   );
 
   // HTML shows Seafood selected by default
@@ -157,7 +156,7 @@ export default function Step4() {
 
   const toggleFood = (id: string) => {
     setSelectedFood((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 

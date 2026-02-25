@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import StepHeader from "../components/StepHeader";
-
 
 type Experience = {
   id: string;
@@ -139,7 +138,7 @@ export default function Step2() {
           "https://lh3.googleusercontent.com/aida-public/AB6AXuBjDCA1uaVgAT3X3HAwA1s8BQPZ1pwPoU_RnJHQZd-hUJREyyuuwuzztYftGWeVlz8Mq6W-EY6hXrqb6CQ5hexX1MhLGaSfED4rq3SGfKJ-ZLMVIhYEXT3HqlKWnukKGZAewBtnkwwAXKuXu6EM6EgjjSC8W8yR1CCtyfgibjDTb4ECscuzth_62Jugzdiw3jUQkNt7DqptqVf7gWhoY6Ho8ikwaIE90_XEw-OpTWUlq1yYeujFNgUk8eBMX61PH5QLJW9Db-dUGm4l",
       },
     ],
-    []
+    [],
   );
 
   // Start with Baalbek + Wine selected like the HTML
@@ -147,7 +146,7 @@ export default function Step2() {
 
   const toggle = (id: string) => {
     setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 
@@ -207,9 +206,9 @@ export default function Step2() {
                       Did you know?
                     </h5>
                     <p className="text-muted leading-relaxed max-w-2xl">
-                      The Temple of Jupiter in Baalbek features some of the largest
-                      monolithic stones ever quarried, weighing over 800 tons each.
-                      Lebanon&apos;s history spans over 7,000 years!
+                      The Temple of Jupiter in Baalbek features some of the
+                      largest monolithic stones ever quarried, weighing over 800
+                      tons each. Lebanon&apos;s history spans over 7,000 years!
                     </p>
                   </div>
 
@@ -219,7 +218,9 @@ export default function Step2() {
                     onClick={() => console.log("Learn more")}
                   >
                     Learn more
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    <span className="material-symbols-outlined text-sm">
+                      arrow_forward
+                    </span>
                   </button>
                 </div>
               </section>
