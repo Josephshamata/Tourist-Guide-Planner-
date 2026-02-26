@@ -1,7 +1,7 @@
 type StepHeaderProps = {
   stepLabel: string;
   title: string;
-  progressPercent: number; // 0..100
+  progressPercent: number;
 };
 
 export default function StepHeader({
