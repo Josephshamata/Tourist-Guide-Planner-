@@ -4,21 +4,35 @@
   /* Core */
   --color-primary: #7c2d12;
 
-  /* Match the HTML look (more neutral/grey background) */
-  --color-background-light: #FFFFFF; /* instead of #FDFBF7 */
+ 
+  --color-background-light: #ffffff; /* instead of #FDFBF7 */
 
   /* Surfaces */
   --color-surface: #ffffff;
   --color-surface-soft: #eef0f3;
 
   /* Text */
-  --color-ink: #000000;     /* strong readable text */
-  --color-muted: #64748b;   /* labels */
-  --color-faint: #94a3b8;   /* helper text */
+  --color-ink: #000000; /* strong readable text */
+  --color-muted: #64748b; /* labels */
+  --color-faint: #94a3b8; 
 
   /* Controls */
-  --color-navy: #0b1020;    /* the dark select background like screenshot */
+  --color-navy: #0b1020; 
   --color-border: #cbd5e1;
+
+  --color-primary: #7c2d12;
+  --color-bg-light: #fdfbf7;
+  --color-bg-dark: #121212;
+  --primary: #7c2d12;
+  --background-light: #fdfbf7;
+  --background-dark: #ffffff;
+  --font-display:
+    "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+  /* --font-display: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+
+  --radius-default: 12px; */
 }
 /* ===== RANGE SLIDER RESET (Fix Purple Issue) ===== */
 
@@ -71,4 +85,3 @@
   background: #e5e7eb;
   border-radius: 999px;
 }
-
