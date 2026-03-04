@@ -11,14 +11,14 @@ import { MainLayout } from "./Views/layouts/MainLayout";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Step1 />} />
+      <Route path="/step1" element={<Step1 />} />
       <Route path="/step2" element={<Step2 />} />
       <Route path="/step3" element={<Step3 />} />
       <Route path="/step4" element={<Step4 />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
       <Route
-        path="/Home"
+        path="/"
         element={
           <MainLayout>
             <HomePage />

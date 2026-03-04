@@ -1,41 +1,84 @@
 import React from "react";
 import { SectionTitle } from "../common/SectionTitle";
-import { OfferCard } from "./OfferCard";
+import { OfferCard, type Offer } from "./OfferCard";
 import { Icon } from "../common/Icon";
-type Offer = {
-  title: string;
-  duration: string;
-  description: string;
-  imageUrl: string;
-  imageAlt: string;
-  badge?: string;
-};
 
 const OFFERS: Offer[] = [
   {
+    id: "classic-lebanon-5d",
     badge: "Signature",
-    title: "The Baalbek Heritage Tour",
-    duration: "8h",
-    description: "Journey through the Roman ruins and taste the finest local vineyards in the Bekaa Valley.",
-    imageAlt: "Golden sunset over the ruins of Baalbek",
+    title: "Classic Lebanon Discovery",
+    days: 5,
+    totalPriceUsd: 890,
+    tag: "Culture",
+    details:
+      "Beirut • Byblos • Jeita Grotto • Harissa • Baalbek • Private driver + boutique hotel",
+    imageAlt: "Byblos harbor at sunset",
+    imageUrl:
+      "https://img.freepik.com/premium-photo/aerial-view-byblos-also-known-as-jbeil-coastal-town-lebanon_261932-16927.jpg",
+  },
+  {
+    id: "mountain-cedars-retreat",
+    badge: "Nature",
+    title: "Cedars & Mountain Retreat",
+    days: 4,
+    totalPriceUsd: 760,
+    tag: "Mountains",
+    details:
+      "Cedars of God • Qadisha Valley • Bsharre • Scenic hikes • Mountain lodge stay",
+    imageAlt: "Cedars forest in Lebanon",
+    imageUrl:
+      "https://www.sophiesworld.net/wp-content/uploads/2018/07/IMG_E3312.jpg",
+  },
+  {
+    id: "baalbek-wine-route",
+    badge: "Heritage",
+    title: "Baalbek & Bekaa Wine Escape",
+    days: 3,
+    totalPriceUsd: 620,
+    tag: "Wine & History",
+    details:
+      "Roman temples of Baalbek • Zahle • Vineyard tasting • Countryside boutique stay",
+    imageAlt: "Baalbek Roman ruins",
     imageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuB2YRYJtBCBqPW3ewB5CyGkhtLJChBKTbSw4XsuCyZffJqneZxyzgWD-VbWwWVuNbnAOgrQyJvAyglbTJXTAp1zK2K3mEGGgiC8oaFzjKRsRSIg1LUf-NP0kEAEtKeK8t2AsfgQrYI7NiQlvUIeovxO3kc1t7j9_x-DdGaJWqHtLJ0DdFnrH-t3EUEFjOmtG8L5u7B10ThdFfpFH03XV0V5vfoGrEQhfjtfeBaMTztUIrIaGAZsdwy3xkVEuYLrwZjujajvOsRs_3I",
   },
+  // {
+  //   id: "beirut-food-weekend",
+  //   badge: "Best Seller",
+  //   title: "Beirut Food & City Weekend",
+  //   days: 3,
+  //   totalPriceUsd: 540,
+  //   tag: "Foodie",
+  //   details:
+  //     "Mar Mikhael • Hamra • Downtown • Street food tour • Rooftop dinner experience",
+  //   imageAlt: "Lebanese mezze table",
+  //   imageUrl:
+  //     "https://lh3.googleusercontent.com/aida-public/AB6AXuDSNOYyuSRPuJDeL3Ju45qmI3X-ZyyzUxQ1ZcbP5o33DsGoC_DCpYZaJrkIK38-SJ48Uubp5ocqyrMVWwDRNHFpQSTz_pbeme7cL8Ib7Yennw5X4JkuQlShg9LB62YG-pxusmUDOqhqQD9bZPZaUQs_OtsUyl6KZ17ZvQVumtHlT0eNXl-L2qMeZ7QMO9no2OJxIHZi2gYaBqLYr8FwR79JLeB48H4wZblbe_f7UMS-OFGRQPdosez_4fS0ZRts9gEbYPlbyhAxkDo",
+  // },
+  // {
+  //   id: "south-lebanon-coast",
+  //   badge: "Adventure",
+  //   title: "South Lebanon Coastal Journey",
+  //   days: 4,
+  //   totalPriceUsd: 710,
+  //   tag: "Coastal",
+  //   details:
+  //     "Sidon • Tyre • Ancient ruins • Mediterranean beaches • Private coastal transfers",
+  //   imageAlt: "Tyre beach Lebanon",
+  //   imageUrl: "https://images.unsplash.com/photo-1583241800698-1c1f39c6d42f",
+  // },
   {
-    title: "Cedars of God Retreat",
-    duration: "2 Days",
-    description: "A spiritual and nature-filled weekend in the ancient forest of Bsharre.",
-    imageAlt: "Snow capped cedar trees in Arz mountains",
-    imageUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDzkwkb5h4cw8FlNCuN5ZFq3Bva9CY_8sIdq3QlgxgKnRCoz7ySc-YusFj7ZtOHuv99Ab299pfjaxKOg4XZDQJcZvZxMEFG5B3-P0IhISBOrKsBXztd2RxPANawVKaLmU7lReo9UMTh0pYXLKvjifMDe6be07DZxuCU6elkv_7sLzat-R4UhX9SFvWJvPHBYIDd0uuaLOLOQTGFbVhqDnvuB4kd1jt0vcuBukDUU5jL0FRqHvhCpg_0mhl6-s-wWRYp8-_UqeDZLSE",
-  },
-  {
-    title: "Beirut Street Food Safari",
-    duration: "4h",
-    description: "Discover hidden culinary gems from Mar Mikhael to the bustling streets of Hamra.",
-    imageAlt: "Traditional Lebanese food spread with mezze",
-    imageUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDSNOYyuSRPuJDeL3Ju45qmI3X-ZyyzUxQ1ZcbP5o33DsGoC_DCpYZaJrkIK38-SJ48Uubp5ocqyrMVWwDRNHFpQSTz_pbeme7cL8Ib7Yennw5X4JkuQlShg9LB62YG-pxusmUDOqhqQD9bZPZaUQs_OtsUyl6KZ17ZvQVumtHlT0eNXl-L2qMeZ7QMO9no2OJxIHZi2gYaBqLYr8FwR79JLeB48H4wZblbe_f7UMS-OFGRQPdosez_4fS0ZRts9gEbYPlbyhAxkDo",
+    id: "romantic-honeymoon",
+    badge: "Luxury",
+    title: "Lebanon Romantic Honeymoon",
+    days: 6,
+    totalPriceUsd: 1290,
+    tag: "Luxury",
+    details:
+      "Private chauffeur • Boutique seaside hotel • Sunset cruise • Fine dining reservations",
+    imageAlt: "Lebanon romantic sunset",
+    imageUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
   },
 ];
 
@@ -43,15 +86,23 @@ export function SignatureOffers() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-12">
       <div className="flex items-center justify-between mb-8">
-        <SectionTitle title="Signature Offers" />
-        <a className="text-primary font-bold text-sm flex items-center gap-1 group" href="#">
-          View All <Icon name="arrow_forward" className="text-sm group-hover:translate-x-1 transition-transform" />
+        <SectionTitle title="Ready-to-book Offers" />
+        <a
+          className="text-primary font-bold text-sm flex items-center gap-1 group"
+          href="#"
+        >
+          View All{" "}
+          <Icon
+            name="arrow_forward"
+            className="text-sm group-hover:translate-x-1 transition-transform"
+          />
         </a>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* More cards: 2 on small, 3 on large, 4 on xl */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {OFFERS.map((offer) => (
-          <OfferCard key={offer.title} offer={offer} />
+          <OfferCard key={offer.id} offer={offer} />
         ))}
       </div>
     </section>

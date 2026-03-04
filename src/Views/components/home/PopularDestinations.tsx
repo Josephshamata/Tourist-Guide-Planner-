@@ -48,7 +48,7 @@ export function PopularDestinations() {
         <SectionTitle title="Popular Destinations" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 h-[600px]">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {DESTINATIONS.map((item) => (
           <DestinationCard key={item.title} item={item} />
         ))}

@@ -1,29 +1,88 @@
 import React from "react";
+import { Icon } from "../common/Icon";
 
 export type Personality = {
-  tag: string;
-  title: string;
+  tag: string; // Personality type name (e.g. "The Explorer")
+  title: string; // Package name (e.g. "Rugged Landscapes") - optional use
   imageUrl: string;
   imageAlt: string;
+
+  // NEW fields for the listing-like details
+  priceUsd: number; // e.g. 890
+  mainPlace: string; // e.g. "Bsharre • Cedars • Qadisha"
+  days: number; // e.g. 5
+  hotelName: string; // e.g. "Byblos Boutique Hotel"
 };
 
 export function PersonalityCard({ item }: { item: Personality }) {
   return (
-    <div className="min-w-[300px] bg-white p-4 rounded-xl shadow-sm hover:shadow-lg transition-all border border-primary/5 group">
-      <div className="h-40 rounded-lg overflow-hidden mb-4">
-        <img
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          src={item.imageUrl}
-          alt={item.imageAlt}
-        />
+    <article className="min-w-[300px] max-w-[300px]">
+      <div className="rounded-[28px] overflow-hidden bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+        {/* Image (NO icons/text on it) */}
+        <div className="p-4 pb-0">
+          <div className="h-48 rounded-2xl overflow-hidden">
+            <img
+              src={item.imageUrl}
+              alt={item.imageAlt}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          </div>
+        </div>
+
+        {/* Details */}
+        <div className="px-5 pt-5 pb-5">
+          {/* Personality name */}
+          <div className="text-sm font-extrabold text-slate-900">
+            {item.tag}
+          </div>
+
+          {/* thin line */}
+          <div className="mt-3 h-px w-full bg-slate-200" />
+
+          {/* Price */}
+          <div className="mt-4 text-2xl font-black text-slate-900 leading-none">
+            ${item.priceUsd}
+          </div>
+
+          {/* Main place (trip details) */}
+          <div className="mt-2 text-xs text-slate-600 font-medium line-clamp-2">
+            {item.mainPlace}
+          </div>
+
+          {/* Days + Hotel row */}
+          <div className="mt-4 flex items-center justify-between gap-3 text-xs text-slate-600">
+            <div className="inline-flex items-center gap-2">
+              <Icon name="schedule" className="text-sm" />
+              <span className="font-semibold">{item.days} days</span>
+            </div>
+
+            <div className="inline-flex items-center gap-2">
+              <Icon name="hotel" className="text-sm" />
+              <span className="font-semibold line-clamp-1">
+                {item.hotelName}
+              </span>
+            </div>
+          </div>
+
+          {/* thin line */}
+          <div className="mt-4 h-px w-full bg-slate-200" />
+
+          {/* CTA */}
+          <div className="mt-5 flex items-center justify-end">
+            {/* <span className="text-xs text-slate-500">
+              Tailored for {item.tag}
+            </span> */}
+
+            <button className="text-sm font-bold text-primary inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+              Explore trips
+              <Icon
+                name="arrow_forward"
+                className="text-base transition-transform group-hover:translate-x-1"
+              />
+            </button>
+          </div>
+        </div>
       </div>
-      <span className="inline-block text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded mb-2 uppercase tracking-wide">
-        {item.tag}
-      </span>
-      <h4 className="font-bold text-slate-900 mb-2">{item.title}</h4>
-      <a className="text-xs font-bold text-primary flex items-center gap-1" href="#">
-        Explore Offers <span className="material-symbols-outlined text-xs">arrow_forward</span>
-      </a>
-    </div>
+    </article>
   );
 }
