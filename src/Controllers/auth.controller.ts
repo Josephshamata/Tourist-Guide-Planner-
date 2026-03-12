@@ -1,5 +1,5 @@
-import { loginUser, signupUser } from "../Services/auth.service";
 import type { LoginFormData, SignupFormData } from "../Models/auth.model";
+import { loginUser, signupUser } from "../Services/auth.service";
 
 export async function handleLogin(data: LoginFormData) {
   if (!data.email || !data.password) {
@@ -10,7 +10,7 @@ export async function handleLogin(data: LoginFormData) {
 }
 
 export async function handleSignup(data: SignupFormData) {
-  if (!data.fullName || !data.email || !data.password || !data.confirmPassword) {
+  if (!data.name || !data.email || !data.password || !data.confirmPassword) {
     throw new Error("Please fill in all fields.");
   }
 
@@ -18,5 +18,9 @@ export async function handleSignup(data: SignupFormData) {
     throw new Error("Passwords do not match.");
   }
 
-  return await signupUser(data);
+  return await signupUser({
+    name: data.name,
+    email: data.email,
+    password: data.password,
+  });
 }
