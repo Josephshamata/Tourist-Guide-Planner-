@@ -1,36 +1,20 @@
+import { apiRequest } from "./api";
+import type {
+  LoginFormData,
+  SignupFormData,
+  AuthResponse,
+} from "../Models/auth.model";
 
-import type { LoginFormData, SignupFormData } from "../Models/auth.model";
-
-export async function loginUser(data: LoginFormData) {
-  console.log("Login payload:", data);
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        user: {
-          id: 1,
-          name: "Elias",
-          email: data.email,
-        },
-      });
-    }, 800);
+export function loginUser(data: LoginFormData) {
+  return apiRequest<AuthResponse>("/auth/login", {
+    method: "POST",
+    body: JSON.stringify(data),
   });
 }
 
-export async function signupUser(data: SignupFormData) {
-  console.log("Signup payload:", data);
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        user: {
-          id: 2,
-          name: data.fullName,
-          email: data.email,
-        },
-      });
-    }, 800);
+export function signupUser(data: Omit<SignupFormData, "confirmPassword">) {
+  return apiRequest<AuthResponse>("/auth/signup", {
+    method: "POST",
+    body: JSON.stringify(data),
   });
 }
