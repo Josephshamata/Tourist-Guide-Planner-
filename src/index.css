@@ -3,9 +3,8 @@
 @theme {
   /* Core */
   --color-primary: #7c2d12;
-
- 
-  --color-background-light: #ffffff; 
+  --color-bg-light: #F8F5F5;
+  --color-bg-dark: #121212;
 
   /* Surfaces */
   --color-surface: #ffffff;
@@ -13,29 +12,27 @@
 
   /* Text */
   --color-ink: #000000;
-  --color-muted: #64748b; 
-  --color-faint: #94a3b8; 
+  --color-muted: #64748b;
+  --color-faint: #94a3b8;
 
   /* Controls */
-  --color-navy: #0b1020; 
+  --color-navy: #0b1020;
   --color-border: #cbd5e1;
 
-  --color-primary: #7c2d12;
-  --color-bg-light: #fdfbf7;
-  --color-bg-dark: #121212;
-  --primary: #7c2d12;
-  --background-light: #fdfbf7;
-  --background-dark: #ffffff;
   --font-display:
     "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-
-  /* --font-display: "Playfair Display", serif;
-  --font-sans: "Inter", sans-serif;
-
-  --radius-default: 12px; */
 }
-/* ===== RANGE SLIDER RESET (Fix Purple Issue) ===== */
 
+/* ✅ Apply background globally */
+html,
+body,
+#root {
+  background: var(--color-bg-light);
+  font-family: var(--font-display);
+  min-height: 100%;
+}
+
+/* ===== RANGE SLIDER RESET (Fix Purple Issue) ===== */
 .custom-slider {
   -webkit-appearance: none;
   appearance: none;
@@ -47,14 +44,12 @@
   cursor: pointer;
 }
 
-/* Track - Chrome / Safari */
 .custom-slider::-webkit-slider-runnable-track {
   height: 6px;
   background: #e5e7eb;
   border-radius: 999px;
 }
 
-/* Thumb - Chrome / Safari */
 .custom-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -62,13 +57,12 @@
   width: 22px;
   border-radius: 999px;
   background: var(--color-primary);
-  border: 5px solid #ffffff; /* white ring */
+  border: 5px solid #ffffff;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-  margin-top: -8px; /* centers thumb on 6px track */
+  margin-top: -8px;
   cursor: pointer;
 }
 
-/* Thumb - Firefox */
 .custom-slider::-moz-range-thumb {
   height: 22px;
   width: 22px;
@@ -79,7 +73,6 @@
   cursor: pointer;
 }
 
-/* Track - Firefox */
 .custom-slider::-moz-range-track {
   height: 6px;
   background: #e5e7eb;

@@ -2,14 +2,7 @@ import React from "react";
 import { SectionTitle } from "../common/SectionTitle";
 import { OfferCard } from "./OfferCard";
 import { Icon } from "../common/Icon";
-type Offer = {
-  title: string;
-  duration: string;
-  description: string;
-  imageUrl: string;
-  imageAlt: string;
-  badge?: string;
-};
+import type { Offer } from "./OfferCard";
 
 const OFFERS: Offer[] = [
   {

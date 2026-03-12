@@ -7,24 +7,32 @@ import Step4 from "./Views/pages/Step4";
 
 import { HomePage } from "./Views/pages/HomePage";
 import { MainLayout } from "./Views/layouts/MainLayout";
+import { ItineraryLanding } from "./Views/pages/ItineraryLanding";
+
+import LoginPage from "./Views/pages/LoginPage";
+import SignupPage from "./Views/pages/SignupPage";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Step1 />} />
+      {/* Layout Wrapper */}
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/itinerary" element={<ItineraryLanding />} />
+      </Route>
+
+      {/* Auth pages without main layout */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+
+      {/* Steps without layout */}
+      <Route path="/step1" element={<Step1 />} />
       <Route path="/step2" element={<Step2 />} />
       <Route path="/step3" element={<Step3 />} />
       <Route path="/step4" element={<Step4 />} />
 
+      {/* Catch all */}
       <Route path="*" element={<Navigate to="/" replace />} />
-      <Route
-        path="/Home"
-        element={
-          <MainLayout>
-            <HomePage />
-          </MainLayout>
-        }
-      />
     </Routes>
   );
 }

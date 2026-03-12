@@ -1,6 +1,6 @@
 import React from "react";
 import { SectionTitle } from "../common/SectionTitle";
-import { PersonalityCard, Personality } from "./PersonalityCard";
+import { PersonalityCard, type Personality } from "./PersonalityCard";
 
 const PERSONALITIES: Personality[] = [
   {

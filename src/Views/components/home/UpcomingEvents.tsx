@@ -1,6 +1,6 @@
 import React from "react";
 import { SectionTitle } from "../common/SectionTitle";
-import { EventCard, EventItem } from "./EventCard";
+import { EventCard, type EventItem } from "./EventCard";
 
 const EVENTS: EventItem[] = [
   {
