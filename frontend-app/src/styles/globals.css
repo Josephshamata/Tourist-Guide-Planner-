@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+/* =====================================================
+   ROOT THEME VARIABLES
+===================================================== */
+:root {
+  /* Background */
+  --bg-light: #F8F5F5;
+  --bg-dark: #121212;
+
+  /* Brand */
+  --primary: #790c13;
+
+  /* Text */
+  --text-dark: #1e293b;
+  --text-light: #f8fafc;
+
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+
+  /* Surfaces */
+  --surface: #ffffff;
+  --surface-soft: #f1f5f9;
+
+  /* Borders */
+  --border: #e2e8f0;
+
+  /* Shadows */
+  --shadow-soft: rgba(121, 12, 19, 0.05);
+  --shadow-float: rgba(121, 12, 19, 0.35);
+}
+
+/* =====================================================
+   GLOBAL BASE
+===================================================== */
+html,
+body {
+  background: var(--bg-light);
+  color: var(--text-dark);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  scroll-behavior: smooth;
+  min-height: 100%;
+}
+
+/* Prevent white flash behind app */
+#root {
+  min-height: 100vh;
+  background: var(--bg-light);
+}
+
+/* =====================================================
+   TIMELINE
+===================================================== */
+.timeline-line {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--primary) 15%,
+    var(--primary) 85%,
+    transparent 100%
+  );
+}
+.timeline-line-gradient {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(121, 12, 19, 1) 15%,
+    rgba(121, 12, 19, 1) 85%,
+    transparent 100%
+  );
+}
+/* =====================================================
+   GLASS CARD
+===================================================== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(121, 12, 19, 0.1);
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 999px;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* =====================================================
+   RANGE SLIDER
+===================================================== */
+.custom-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+}
+
+.custom-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 22px;
+  width: 22px;
+  border-radius: 999px;
+  background: var(--primary);
+  border: 5px solid #ffffff;
+  box-shadow: 0 6px 16px var(--shadow-soft);
+  margin-top: -8px;
+  cursor: pointer;
+}
+
+.custom-slider::-moz-range-thumb {
+  height: 22px;
+  width: 22px;
+  border-radius: 999px;
+  background: var(--primary);
+  border: 5px solid #ffffff;
+  box-shadow: 0 6px 16px var(--shadow-soft);
+  cursor: pointer;
+}
+
+.custom-slider::-moz-range-track {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+}
+
+/* =====================================================
+   DARK MODE (Optional Ready)
+===================================================== */
+.dark {
+  --bg-light: var(--bg-dark);
+  --text-dark: var(--text-light);
+}
