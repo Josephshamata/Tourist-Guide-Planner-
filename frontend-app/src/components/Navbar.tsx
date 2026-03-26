@@ -5,11 +5,16 @@ type NavbarProps = {
 
 export default function Navbar({ onSave, onClose }: NavbarProps) {
   return (
-    <header className="w-full px-6 py-5 lg:px-12 2xl:px-20 flex items-center justify-between border-b border-stone-200/60 dark:border-slate-800/60 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full px-6 py-5 lg:px-12 2xl:px-20 flex items-center justify-between border-b border-stone-200/60 dark:border-slate-800/60 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-primary">
+        <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-primary shadow-md">
+          <img
+            src="/images/arze.png"
+            alt="961 Logo"
+            className="w-7 h-7 object-contain"
+          />
         </div>
-        <span className="text-2xl font-bold tracking-tight text-primary">
+        <span className="text-2xl font-bold tracking-tight">
           961.
         </span>
       </div>

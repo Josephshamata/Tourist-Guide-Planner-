@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import StepHeader from "../components/StepHeader";
+import StepNavigation from "../../components/StepNavigation";
+import FunFact from "../../components/FunFact";
 
 type MusicOption = {
   id: string;
@@ -161,61 +163,20 @@ export default function Step3() {
                   ))}
                 </div>
 
-                {/* Fun fact card */}
-                <div className="bg-primary/5 rounded-xl border border-primary/10 p-6 mb-24">
-                  <div className="flex items-start gap-4">
-                    <div className="bg-primary/10 p-3 rounded-full flex items-center justify-center text-primary">
-                      <span className="material-symbols-outlined">
-                        lightbulb
-                      </span>
-                    </div>
-
-                    <div>
-                      <h4 className="text-primary font-bold text-lg mb-1">
-                        Fun Fact
-                      </h4>
-                      <p className="text-primary/80 leading-relaxed max-w-2xl">
-                        Beirut was once known as the “Paris of the Middle East”
-                        for its legendary live music scenes and diverse jazz
-                        clubs that attracted icons from around the world.
-                      </p>
-
-                      <a
-                        className="inline-flex items-center gap-2 mt-3 text-sm font-bold text-primary border-b border-primary/30 hover:border-primary transition-colors"
-                        href="#"
-                      >
-                        Learn more about Lebanese Nightlife
-                        <span className="material-symbols-outlined text-sm">
-                          arrow_forward
-                        </span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                <FunFact
+                  description="Beirut was once known as the 'Paris of the Middle East' for its legendary live music scenes and diverse jazz clubs that attracted icons from around the world."
+                  linkText="Learn more about Lebanese Nightlife"
+                />
               </section>
             </form>
           </div>
 
-          {/* Bottom buttons */}
-          <div className="px-6 py-6 sm:px-8">
-            <div className="flex items-center justify-end gap-10">
-              <Link
-                to="/step4"
-                className="cursor-pointer font-semibold text-muted transition-colors hover:text-primary"
-              >
-                Skip this step
-              </Link>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                className="cursor-pointer flex items-center gap-2 rounded-full bg-primary px-10 py-4 font-bold text-white shadow-xl shadow-primary/20 transition-transform hover:scale-105 active:scale-95"
-              >
-                Choose Food Preferences
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </button>
-            </div>
-          </div>
+          <StepNavigation
+          backTo="/step2"
+            nextTo="/step4"
+            nextLabel="Choose Food Preferences"
+            skipTo="/step4"
+          />
 
           <div className="h-10" />
         </div>
