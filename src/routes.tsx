@@ -11,6 +11,7 @@ import { ItineraryLanding } from "./Views/pages/ItineraryLanding";
 
 import LoginPage from "./Views/pages/LoginPage";
 import SignupPage from "./Views/pages/SignupPage";
+import BudgetManagementPage from "./Views/pages/BudgetManagementPage";
 
 export default function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ export default function AppRoutes() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/itinerary" element={<ItineraryLanding />} />
+        <Route path="/budget" element={<BudgetManagementPage />} />
       </Route>
 
       {/* Auth pages without main layout */}

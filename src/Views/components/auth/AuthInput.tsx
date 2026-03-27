@@ -15,7 +15,7 @@ export default function AuthInput({
       </label>
       <input
         {...props}
-        className="h-12 rounded-full border border-[var(--slate-200)] bg-white px-5 text-[var(--text-dark)] outline-none transition focus:border-[var(--primary)] placeholder:text-[var(--slate-400)]"
+        className="h-12 rounded-full border border-[var(--slate-200)] bg-white px-5 text-[var(--text-dark)] outline-none transition focus:border-[var(--primary)] placeholder:text-[var(--slate-400)] placeholder:opacity-50"
       />
     </div>
   );

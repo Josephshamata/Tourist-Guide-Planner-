@@ -5,8 +5,8 @@ import { Button } from "../common/Button";
 export function Header() {
   const location = useLocation();
 
-  // detect itinerary page
   const isItineraryPage = location.pathname.startsWith("/itinerary");
+  const isBudgetPage = location.pathname.startsWith("/budget");
 
   const user = {
     name: "Mohammad Sabra",
@@ -18,7 +18,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-background-light/95 backdrop-blur-md border-b border-primary/10">
       <div className="w-full px-10 h-20 flex items-center justify-between">
-        
+
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-md">
@@ -28,6 +28,7 @@ export function Header() {
               className="w-7 h-7 object-contain"
             />
           </div>
+
           <h1 className="text-xl font-extrabold tracking-tight text-slate-900">
             961.
           </h1>
@@ -65,9 +66,38 @@ export function Header() {
             </div>
           )}
 
-          {/* Hide this ONLY on itinerary */}
-          {!isItineraryPage && <Button>Build My Trip</Button>}
+          {/* Budget Controls */}
+          {isBudgetPage && (
+            <div className="flex items-center gap-2">
 
+              <button className="flex items-center justify-center rounded-full size-10 bg-[var(--accent-soft)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white transition-all duration-300">
+                <span className="material-symbols-outlined text-xl">
+                  ios_share
+                </span>
+              </button>
+
+              <button className="flex items-center justify-center rounded-full size-10 bg-[var(--accent-soft)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white transition-all duration-300">
+                <span className="material-symbols-outlined text-xl">
+                  picture_as_pdf
+                </span>
+              </button>
+
+              <button className="ml-2 flex items-center gap-2 rounded-full bg-[var(--primary)] px-6 py-2.5 text-sm font-bold text-white shadow-lg hover:scale-105 transition-transform">
+                <span className="material-symbols-outlined text-sm">
+                  edit
+                </span>
+                Edit Total Budget
+              </button>
+
+            </div>
+          )}
+
+          {/* Build Trip (hidden on itinerary + budget) */}
+          {!isItineraryPage && !isBudgetPage && (
+            <Button>Build My Trip</Button>
+          )}
+
+          {/* Profile */}
           {user ? (
             <Link to="/profile">
               <img
@@ -81,6 +111,7 @@ export function Header() {
               <Button variant="ghost">Sign In</Button>
             </Link>
           )}
+
         </div>
       </div>
     </header>

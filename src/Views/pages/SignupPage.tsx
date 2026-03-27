@@ -54,7 +54,7 @@ export default function SignupPage() {
       <AuthCard>
         <div className="mb-8">
           <h2 className="text-[32px] leading-[40px] font-extrabold text-[var(--text-dark)]">
-            Join Levantine
+            Join 961 Travelers
           </h2>
           <p className="mt-2 text-[var(--slate-500)]">
             Create your account to begin.
@@ -107,7 +107,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full h-12 rounded-full bg-[var(--primary)] text-white font-bold transition hover:opacity-95 disabled:opacity-60"
+            className="w-full h-12 rounded-full border border-[var(--slate-200)] bg-[var(--primary)] text-black font-bold transition hover:opacity-95 disabled:opacity-60"
           >
             {loading ? "Creating account..." : "Sign Up"}
           </button>
