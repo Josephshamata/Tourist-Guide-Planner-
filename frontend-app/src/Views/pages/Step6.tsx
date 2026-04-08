@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Navbar from "../../components/Navbar";
-import StepHeader from "../components/StepHeader";
+import Navbar from "../components/steps/Navbar";
+import StepHeader from "../components/steps/StepHeader";
 
 type Service = "driver" | "hotel" | "guide" | "airport" | "vip";
 
@@ -227,8 +227,6 @@ export default function Step6() {
                 </div>
               </div>
             </section>
-
-            
 
             <div className="h-4" />
           </div>

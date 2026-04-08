@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import StepHeader from "../components/StepHeader";
-import StepNavigation from "../../components/StepNavigation";
-import FunFact from "../../components/FunFact";
+import Navbar from "../components/steps/Navbar";
+import StepHeader from "../components/steps/StepHeader";
+import StepNavigation from "../components/steps/StepNavigation";
+import FunFact from "../components/steps/FunFact";
 
 type FoodCard = {
   id: string;
@@ -299,9 +299,7 @@ export default function Step4() {
                 </div>
               </section>
 
-              <FunFact
-                description="The Lebanese Mediterranean diet is considered one of the healthiest in the world. It's naturally rich in extra-virgin olive oil, fresh mountain-grown vegetables, and lean proteins. You can indulge your palate while nourishing your body!"
-              />
+              <FunFact description="The Lebanese Mediterranean diet is considered one of the healthiest in the world. It's naturally rich in extra-virgin olive oil, fresh mountain-grown vegetables, and lean proteins. You can indulge your palate while nourishing your body!" />
             </form>
           </div>
 

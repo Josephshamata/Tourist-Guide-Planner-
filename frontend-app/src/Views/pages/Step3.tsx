@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import StepHeader from "../components/StepHeader";
-import StepNavigation from "../../components/StepNavigation";
-import FunFact from "../../components/FunFact";
+import Navbar from "../components/steps/Navbar";
+import StepHeader from "../components/steps/StepHeader";
+import StepNavigation from "../components/steps/StepNavigation";
+import FunFact from "../components/steps/FunFact";
 
 type MusicOption = {
   id: string;
@@ -172,7 +172,7 @@ export default function Step3() {
           </div>
 
           <StepNavigation
-          backTo="/step2"
+            backTo="/step2"
             nextTo="/step4"
             nextLabel="Choose Food Preferences"
             skipTo="/step4"

@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import StepHeader from "../components/StepHeader";
-import StepNavigation from "../../components/StepNavigation";
-import FunFact from "../../components/FunFact";
+import Navbar from "../components/steps/Navbar";
+import StepHeader from "../components/steps/StepHeader";
+import StepNavigation from "../components/steps/StepNavigation";
+import FunFact from "../components/steps/FunFact";
 
 type Experience = {
   id: string;
@@ -196,9 +196,9 @@ export default function Step2() {
                 </div>
 
                 <FunFact
-              description="The Temple of Jupiter in Baalbek features some of the largest monolithic stones ever quarried, weighing over 800 tons each. Lebanon's history spans over 7,000 years!"
-              linkText="Learn more"
-              />
+                  description="The Temple of Jupiter in Baalbek features some of the largest monolithic stones ever quarried, weighing over 800 tons each. Lebanon's history spans over 7,000 years!"
+                  linkText="Learn more"
+                />
               </section>
             </form>
           </div>

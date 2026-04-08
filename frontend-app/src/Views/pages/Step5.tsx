@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import StepHeader from "../components/StepHeader";
-import StepNavigation from "../../components/StepNavigation";
-import FunFact from "../../components/FunFact";
+import Navbar from "../components/steps/Navbar";
+import StepHeader from "../components/steps/StepHeader";
+import StepNavigation from "../components/steps/StepNavigation";
+import FunFact from "../components/steps/FunFact";
 
 type Comfort = "budget" | "balanced" | "premium" | "vip";
 type Stay = "boutique" | "beach" | "mountain" | "guesthouse";
@@ -39,9 +39,7 @@ function ComfortCard({
         <div className="flex justify-end">
           {selected ? (
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-lg">
-              <span className="material-symbols-outlined text-base">
-                check
-              </span>
+              <span className="material-symbols-outlined text-base">check</span>
             </div>
           ) : (
             <div className="h-9 w-9" />
@@ -84,9 +82,7 @@ function StayCard({
       <div className="flex justify-end">
         {active ? (
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white shadow-md">
-            <span className="material-symbols-outlined text-sm">
-              check
-            </span>
+            <span className="material-symbols-outlined text-sm">check</span>
           </div>
         ) : (
           <div className="h-8 w-8" />
@@ -124,7 +120,6 @@ export default function Step5() {
       />
 
       <div className="mx-auto w-full max-w-5xl">
-
         <StepHeader
           stepLabel="Step 5 of 6"
           title="Choose your comfort & stay style!"
@@ -133,15 +128,11 @@ export default function Step5() {
 
         <div className="px-6 py-8 sm:px-8">
           <form className="space-y-14" onSubmit={(e) => e.preventDefault()}>
-
             {/* SECTION 1 */}
             <section className="flex flex-col gap-6">
-              <h2 className="text-2xl font-bold">
-                Comfort Level
-              </h2>
+              <h2 className="text-2xl font-bold">Comfort Level</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
                 <ComfortCard
                   title="Smart & Budget-Friendly"
                   imageUrl="https://lh3.googleusercontent.com/aida-public/AB6AXuDA4UO90wMCFCiVlIQ7QA4K6BvHyoot4Xbxu0Lm7qCOWB-RegtjTwutQTJgshP9tkvtbOmSdbYZf5SYNf2KxLRP1r9oZybsBiHegl3lzT_fEy1JMxr3ES5McjLxaIKsSEZClwY_Y2H57_vvsyQgQhtmuIW-jogmK6LM-05FYlk9BuCaITZbrvjvB20aq30_h2Kvw16gZ-LPEccQd7ZbEDAZ0oHrrN0T6dDHAQhKFcSvpPemb9PNuPgNh968ce1qKDFiRB6U3gZuW2Hz"
@@ -169,7 +160,6 @@ export default function Step5() {
                   selected={comfort === "vip"}
                   onClick={() => setComfort("vip")}
                 />
-
               </div>
             </section>
 
@@ -180,12 +170,30 @@ export default function Step5() {
               </h2>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-
-                <StayCard active={stay === "boutique"} onClick={() => setStay("boutique")} icon="apartment" label="Boutique Hotel" />
-                <StayCard active={stay === "beach"} onClick={() => setStay("beach")} icon="beach_access" label="Beach Resort" />
-                <StayCard active={stay === "mountain"} onClick={() => setStay("mountain")} icon="landscape" label="Mountain Lodge" />
-                <StayCard active={stay === "guesthouse"} onClick={() => setStay("guesthouse")} icon="home" label="Guesthouse" />
-
+                <StayCard
+                  active={stay === "boutique"}
+                  onClick={() => setStay("boutique")}
+                  icon="apartment"
+                  label="Boutique Hotel"
+                />
+                <StayCard
+                  active={stay === "beach"}
+                  onClick={() => setStay("beach")}
+                  icon="beach_access"
+                  label="Beach Resort"
+                />
+                <StayCard
+                  active={stay === "mountain"}
+                  onClick={() => setStay("mountain")}
+                  icon="landscape"
+                  label="Mountain Lodge"
+                />
+                <StayCard
+                  active={stay === "guesthouse"}
+                  onClick={() => setStay("guesthouse")}
+                  icon="home"
+                  label="Guesthouse"
+                />
               </div>
             </section>
 
@@ -194,7 +202,6 @@ export default function Step5() {
               description="Lebanon offers one of the most diverse stays per square kilometer — from luxury seaside resorts to cozy mountain lodges within just a 1-hour drive."
               linkText="Explore Lebanon’s unique stays"
             />
-
           </form>
         </div>
 

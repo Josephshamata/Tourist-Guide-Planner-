@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import StepHeader from "../components/StepHeader";
-import TravelPartyCard from "../components/TravelPartyCard";
-import StepNavigation from "../../components/StepNavigation";
-import FunFact from "../../components/FunFact";
+import Navbar from "../components/steps/Navbar";
+import StepHeader from "../components/steps/StepHeader";
+import TravelPartyCard from "../components/steps/TravelPartyCard";
+import StepNavigation from "../components/steps/StepNavigation";
+import FunFact from "../components/steps/FunFact";
 
 type TravelParty = "solo" | "friends" | "family" | "romantic";
 type AgeRange = "18-25" | "26-35" | "36-45" | "46-55" | "55+";
@@ -48,7 +48,7 @@ export default function Step1() {
           "https://lh3.googleusercontent.com/aida-public/AB6AXuBllaLz90cwsxbr3qbSGbB3du85Mu4lnjUIFFqVuWbhx_kh5Zw347roMb4butEBWrhC-WNHhJcx2J-YeYooBb8gwRuZX5ikGad1tlpIxMRMNYZCPj5LxHX0UG7vUqP_dCw7SVr34pKEWhcaAKUulqdJ3qmBMuz_s0GcjeayxCNpkvQxEK5NwG6zIVP3PLnevmhA3yV0p_OgKsCBfdSelcGTOMpYn_kVPPawgv6297wusvu9w-2XuMdZwCotg5d2xlBZT5TEYEmyzfa-",
       },
     ],
-    []
+    [],
   );
 
   const ageButtons: AgeRange[] = ["18-25", "26-35", "36-45", "46-55", "55+"];
@@ -60,11 +60,18 @@ export default function Step1() {
 
   return (
     <div className="min-h-screen bg-background-light font-sans text-black">
-      <Navbar onSave={() => console.log("Save progress")} onClose={() => console.log("Close")} />
+      <Navbar
+        onSave={() => console.log("Save progress")}
+        onClose={() => console.log("Close")}
+      />
 
       <div className="mx-auto w-full max-w-5xl">
         <div className="overflow-hidden">
-          <StepHeader stepLabel="Step 1 of 6" title="Let’s plan your summer!" progressPercent={10} />
+          <StepHeader
+            stepLabel="Step 1 of 6"
+            title="Let’s plan your summer!"
+            progressPercent={10}
+          />
 
           <div className="px-6 py-8 sm:px-8">
             <form className="space-y-16" onSubmit={(e) => e.preventDefault()}>
@@ -74,7 +81,9 @@ export default function Step1() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
                     1
                   </span>
-                  <h2 className="text-xl font-bold text-black">Who are you traveling with?</h2>
+                  <h2 className="text-xl font-bold text-black">
+                    Who are you traveling with?
+                  </h2>
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -88,7 +97,9 @@ export default function Step1() {
                       selected={travelParty === (c.value as TravelParty)}
                       onSelect={(v) =>
                         setTravelParty((prev) =>
-                          prev === (v as TravelParty) ? null : (v as TravelParty)
+                          prev === (v as TravelParty)
+                            ? null
+                            : (v as TravelParty),
                         )
                       }
                       showCheck
@@ -103,7 +114,9 @@ export default function Step1() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
                     2
                   </span>
-                  <h2 className="text-xl font-bold text-black">What’s your age range?</h2>
+                  <h2 className="text-xl font-bold text-black">
+                    What’s your age range?
+                  </h2>
                 </div>
 
                 <div className="flex flex-wrap gap-3">
@@ -113,7 +126,9 @@ export default function Step1() {
                       <button
                         key={a}
                         type="button"
-                        onClick={() => setAgeRange((prev) => (prev === a ? null : a))}
+                        onClick={() =>
+                          setAgeRange((prev) => (prev === a ? null : a))
+                        }
                         className={
                           active
                             ? "cursor-pointer rounded-full bg-primary px-8 py-3 font-medium text-white shadow-lg shadow-primary/20"
@@ -133,13 +148,17 @@ export default function Step1() {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
                     3
                   </span>
-                  <h2 className="text-xl font-bold text-black">When are you planning to visit?</h2>
+                  <h2 className="text-xl font-bold text-black">
+                    When are you planning to visit?
+                  </h2>
                 </div>
 
                 <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                   <div>
                     <label className="mb-4 flex items-center gap-2 font-medium text-muted">
-                      <span className="material-symbols-outlined text-sm">calendar_month</span>
+                      <span className="material-symbols-outlined text-sm">
+                        calendar_month
+                      </span>
                       When are you coming?
                     </label>
 
@@ -162,7 +181,9 @@ export default function Step1() {
                   <div>
                     <div className="mb-4 flex items-center justify-between">
                       <label className="flex items-center gap-2 font-medium text-muted">
-                        <span className="material-symbols-outlined text-sm">schedule</span>
+                        <span className="material-symbols-outlined text-sm">
+                          schedule
+                        </span>
                         How long is the stay?
                       </label>
                       <span className="text-xl font-bold text-primary">
@@ -190,16 +211,16 @@ export default function Step1() {
               </section>
 
               <FunFact
-              description="Lebanon is one of the few places where you can ski in the mountains and swim in the Mediterranean on the same day."
-              linkText="Discover Lebanon’s unique geography"
+                description="Lebanon is one of the few places where you can ski in the mountains and swim in the Mediterranean on the same day."
+                linkText="Discover Lebanon’s unique geography"
               />
             </form>
           </div>
 
           <StepNavigation
-          nextTo="/step2"
-          nextLabel="Choose Experiences"
-          skipTo="/step2"
+            nextTo="/step2"
+            nextLabel="Choose Experiences"
+            skipTo="/step2"
           />
 
           <div className="h-10" />
