@@ -66,7 +66,7 @@ export default function SignupPage() {
       <AuthCard>
         <div className="mb-6">
           <h2 className="text-[32px] leading-[40px] font-extrabold text-[var(--text-dark)]">
-            Join Levantine
+            Join 961 Travelers
           </h2>
           <p className="mt-2 text-[var(--slate-500)]">
             Create your account to begin.

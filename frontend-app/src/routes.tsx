@@ -10,7 +10,11 @@ import { MainLayout } from "./Views/layouts/MainLayout";
 import { ItineraryLanding } from "./Views/pages/ItineraryLanding";
 
 import SignupPage from "./Views/pages/SignupPage";
+<<<<<<< HEAD:frontend-app/src/routes.tsx
 import LoginPage from "./Views/pages/LoginPage";
+=======
+import BudgetManagementPage from "./Views/pages/BudgetManagementPage";
+>>>>>>> itenerary:src/routes.tsx
 
 export default function AppRoutes() {
   return (
@@ -18,6 +22,7 @@ export default function AppRoutes() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/itinerary" element={<ItineraryLanding />} />
+        <Route path="/budget" element={<BudgetManagementPage />} />
       </Route>
 
       <Route path="/login" element={<LoginPage />} />

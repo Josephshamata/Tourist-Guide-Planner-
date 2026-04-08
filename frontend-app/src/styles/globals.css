@@ -4,12 +4,15 @@
    ROOT THEME VARIABLES
 ===================================================== */
 :root {
-  /* Background */
-  --bg-light: #F8F5F5;
+  /* Backgrounds */
+  --bg-light: #f8f5f5;
   --bg-dark: #121212;
+  --background-light: #f8f5f5;
+  --background-dark: #221610;
 
   /* Brand */
   --primary: #790c13;
+  --accent-soft: #f4ebe7;
 
   /* Text */
   --text-dark: #1e293b;
@@ -27,10 +30,13 @@
 
   /* Borders */
   --border: #e2e8f0;
-
+  --primary-10: rgba(121, 12, 19, 0.1);
+  --primary-20: rgba(121, 12, 19, 0.2);
+  --primary-60: rgba(121, 12, 19, 0.6);
   /* Shadows */
   --shadow-soft: rgba(121, 12, 19, 0.05);
   --shadow-float: rgba(121, 12, 19, 0.35);
+  --shadow-soft-red: 0 10px 30px -5px rgba(121, 12, 19, 0.08);
 }
 
 /* =====================================================
@@ -43,12 +49,25 @@ body {
   font-family: "Plus Jakarta Sans", sans-serif;
   scroll-behavior: smooth;
   min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* Prevent white flash behind app */
 #root {
   min-height: 100vh;
   background: var(--bg-light);
+}
+
+/* =====================================================
+   ICONS
+===================================================== */
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }
 
 /* =====================================================
@@ -63,6 +82,7 @@ body {
     transparent 100%
   );
 }
+
 .timeline-line-gradient {
   background: linear-gradient(
     to bottom,
@@ -72,6 +92,7 @@ body {
     transparent 100%
   );
 }
+
 /* =====================================================
    GLASS CARD
 ===================================================== */
@@ -86,6 +107,7 @@ body {
 ===================================================== */
 .custom-scrollbar::-webkit-scrollbar {
   height: 4px;
+  width: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
@@ -144,6 +166,37 @@ body {
   height: 6px;
   background: #e5e7eb;
   border-radius: 999px;
+}
+
+/* =====================================================
+   TOGGLE SWITCH
+===================================================== */
+.toggle-checkbox:checked + .toggle-label {
+  background-color: var(--primary);
+}
+
+.toggle-checkbox:checked + .toggle-label + .toggle-dot,
+.toggle-checkbox:checked ~ .toggle-dot {
+  transform: translateX(100%);
+}
+
+.toggle-label {
+  transition: background-color 0.2s ease;
+}
+
+.toggle-dot {
+  transition: transform 0.2s ease;
+}
+
+/* =====================================================
+   UTILITY CLASSES
+===================================================== */
+.shadow-soft-red {
+  box-shadow: var(--shadow-soft-red);
+}
+
+.bg-accent-soft {
+  background: var(--accent-soft);
 }
 
 /* =====================================================
