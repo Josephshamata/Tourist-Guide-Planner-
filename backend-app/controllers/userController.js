@@ -1,4 +1,12 @@
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+
+// Generate JWT Token
+const generateToken = (userId) => {
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_COOKIE_EXPIRY || "7d",
+  });
+};
 
 // REGISTER
 exports.registerUser = async (req, res) => {
@@ -24,6 +32,17 @@ exports.registerUser = async (req, res) => {
       email,
       phone,
       password,
+    });
+
+    const token = generateToken(user._id);
+    console.log("Generated Token:", token);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+
     });
 
     res.status(201).json({
@@ -63,6 +82,15 @@ exports.loginUser = async (req, res) => {
         message: "Invalid email or password",
       });
     }
+
+    const token = generateToken(user._id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
     res.status(200).json({
       message: "Login successful",

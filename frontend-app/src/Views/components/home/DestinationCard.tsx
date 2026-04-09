@@ -6,8 +6,8 @@ export type Destination = {
   title: string;
   imageUrl: string;
   imageAlt: string;
-  className?: string; // for grid spans
-  count?: number; // optional: number of experiences
+  className?: string; 
+  count?: number; 
 };
 
 export function DestinationCard({ item }: { item: Destination }) {

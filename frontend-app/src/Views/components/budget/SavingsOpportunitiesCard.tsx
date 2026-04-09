@@ -1,5 +1,5 @@
 import React from "react";
-import type { SavingsOpportunity } from "../../../Models/budget.model";
+import type { SavingsOpportunity } from "../../../models/budget.model";
 
 const opportunities: SavingsOpportunity[] = [
   {

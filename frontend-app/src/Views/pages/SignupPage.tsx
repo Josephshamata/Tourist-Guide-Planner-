@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import AuthLayout from "../components/auth/AuthLayout";
 import AuthCard from "../components/auth/AuthCard";
 import AuthInput from "../components/auth/AuthInput";
@@ -9,8 +8,6 @@ import AuthPhoneInput from "../components/auth/AuthPhoneInput";
 import { handleRegister } from "../../controllers/auth.controller";
 
 export default function SignupPage() {
-  const navigate = useNavigate();
-
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -46,7 +43,9 @@ export default function SignupPage() {
 
       console.log("Registered:", res);
 
-      navigate("/");
+      sessionStorage.setItem("tabAuthenticated", "true");
+
+      window.location.assign("/home");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);

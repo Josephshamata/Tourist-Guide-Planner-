@@ -1,5 +1,5 @@
 import React from "react";
-import type { RebalanceRecommendation } from "../../../Models/budget.model";
+import type { RebalanceRecommendation } from "../../../models/budget.model";
 
 const recommendations: RebalanceRecommendation[] = [
   {

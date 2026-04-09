@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import StepHeader from "../components/StepHeader";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/steps/Navbar";
+import StepHeader from "../components/steps/StepHeader";
+import StepNavigation from "../components/steps/StepNavigation";
+import FunFact from "../components/steps/FunFact";
 
 type FoodCard = {
   id: string;
@@ -297,49 +299,16 @@ export default function Step4() {
                 </div>
               </section>
 
-              {/* Pro Tip */}
-              <section className="bg-primary/5 border border-primary/10 rounded-xl p-8 flex flex-col md:flex-row items-center gap-6">
-                <div className="size-16 rounded-full bg-primary flex items-center justify-center text-white flex-shrink-0">
-                  <span className="material-symbols-outlined text-3xl">
-                    lightbulb
-                  </span>
-                </div>
-                <div>
-                  <h4 className="text-primary font-bold text-lg mb-1 uppercase tracking-wide">
-                    Pro Tip: Healthy Heritage
-                  </h4>
-                  <p className="text-muted leading-relaxed text-sm">
-                    The Lebanese Mediterranean diet is considered one of the
-                    healthiest in the world. It&apos;s naturally rich in
-                    extra-virgin olive oil, fresh mountain-grown vegetables, and
-                    lean proteins. You can indulge your palate while nourishing
-                    your body!
-                  </p>
-                </div>
-              </section>
+              <FunFact description="The Lebanese Mediterranean diet is considered one of the healthiest in the world. It's naturally rich in extra-virgin olive oil, fresh mountain-grown vegetables, and lean proteins. You can indulge your palate while nourishing your body!" />
             </form>
           </div>
 
-          {/* Bottom buttons */}
-          <div className="px-6 py-6 sm:px-8">
-            <div className="flex items-center justify-end gap-10">
-              <Link
-                to="/step5"
-                className="cursor-pointer font-semibold text-muted transition-colors hover:text-primary"
-              >
-                Skip this step
-              </Link>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                className="cursor-pointer flex items-center gap-2 rounded-full bg-primary px-10 py-4 font-bold text-white shadow-xl shadow-primary/20 transition-transform hover:scale-105 active:scale-95"
-              >
-                Proceed
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </button>
-            </div>
-          </div>
+          <StepNavigation
+            backTo="/step3"
+            nextTo="/step5"
+            nextLabel="Select Place of Comfort And Stay"
+            skipTo="/step5"
+          />
 
           <div className="h-10" />
         </div>

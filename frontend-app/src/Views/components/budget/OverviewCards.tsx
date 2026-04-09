@@ -1,5 +1,5 @@
 import React from "react";
-import type { OverviewStat } from "../../../Models/budget.model";
+import type { OverviewStat } from "../../../models/budget.model";
 
 const stats: OverviewStat[] = [
   {

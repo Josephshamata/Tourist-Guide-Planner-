@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthLayout from "../components/auth/AuthLayout";
 import AuthCard from "../components/auth/AuthCard";
 import AuthInput from "../components/auth/AuthInput";
@@ -9,8 +9,6 @@ import { handleLogin } from "../../controllers/auth.controller";
 
 
 export default function LoginPage() {
-  const navigate = useNavigate();
-
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -36,7 +34,9 @@ async function onSubmit(e: React.FormEvent) {
 
     console.log("Login success:", res);
 
-    navigate("/"); // go to home/dashboard
+    sessionStorage.setItem("tabAuthenticated", "true");
+
+    window.location.assign("/home");
   } catch (err) {
     if (err instanceof Error) {
       setError(err.message);

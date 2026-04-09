@@ -1,5 +1,5 @@
 import React from "react";
-import type { BudgetAlert } from "../../../Models/budget.model";
+import type { BudgetAlert } from "../../../models/budget.model";
 
 
 const alerts: BudgetAlert[] = [

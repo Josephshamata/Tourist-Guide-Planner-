@@ -4,13 +4,11 @@ const router = express.Router();
 const {
   getAllOffers,
   getSignatureOffers,
-  getPersonalityOffers
+  getPersonalityOffers,
 } = require("../controllers/offerController");
 
 router.get("/", getAllOffers);
-
 router.get("/signature", getSignatureOffers);
-
 router.get("/personality", getPersonalityOffers);
 
 module.exports = router;

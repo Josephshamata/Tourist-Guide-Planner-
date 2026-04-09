@@ -1,16 +1,19 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import StepHeader from "../components/StepHeader";
-import TravelPartyCard from "../components/TravelPartyCard";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/steps/Navbar";
+import StepHeader from "../components/steps/StepHeader";
+import TravelPartyCard from "../components/steps/TravelPartyCard";
+import StepNavigation from "../components/steps/StepNavigation";
+import FunFact from "../components/steps/FunFact";
 
 type TravelParty = "solo" | "friends" | "family" | "romantic";
 type AgeRange = "18-25" | "26-35" | "36-45" | "46-55" | "55+";
 
 export default function Step1() {
   const navigate = useNavigate();
-  const [travelParty, setTravelParty] = useState<TravelParty>("solo");
-  const [ageRange, setAgeRange] = useState<AgeRange>("26-35");
+
+  const [travelParty, setTravelParty] = useState<TravelParty | null>("solo");
+  const [ageRange, setAgeRange] = useState<AgeRange | null>("26-35");
   const [month, setMonth] = useState<string>("July 2024");
   const [days, setDays] = useState<number>(14);
 
@@ -72,7 +75,7 @@ export default function Step1() {
 
           <div className="px-6 py-8 sm:px-8">
             <form className="space-y-16" onSubmit={(e) => e.preventDefault()}>
-              {/* SECTION 1 */}
+              {/* Section 1 */}
               <section>
                 <div className="mb-8 flex items-center gap-3">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
@@ -92,14 +95,20 @@ export default function Step1() {
                       subtitle={c.subtitle}
                       imageUrl={c.imageUrl}
                       selected={travelParty === (c.value as TravelParty)}
-                      onSelect={(v) => setTravelParty(v as TravelParty)}
+                      onSelect={(v) =>
+                        setTravelParty((prev) =>
+                          prev === (v as TravelParty)
+                            ? null
+                            : (v as TravelParty),
+                        )
+                      }
                       showCheck
                     />
                   ))}
                 </div>
               </section>
 
-              {/* SECTION 2 */}
+              {/* Section 2 */}
               <section>
                 <div className="mb-8 flex items-center gap-3">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
@@ -117,7 +126,9 @@ export default function Step1() {
                       <button
                         key={a}
                         type="button"
-                        onClick={() => setAgeRange(a)}
+                        onClick={() =>
+                          setAgeRange((prev) => (prev === a ? null : a))
+                        }
                         className={
                           active
                             ? "cursor-pointer rounded-full bg-primary px-8 py-3 font-medium text-white shadow-lg shadow-primary/20"
@@ -131,7 +142,7 @@ export default function Step1() {
                 </div>
               </section>
 
-              {/* SECTION 3 */}
+              {/* Section 3 */}
               <section>
                 <div className="mb-8 flex items-center gap-3">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
@@ -143,7 +154,6 @@ export default function Step1() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-                  {/* Month */}
                   <div>
                     <label className="mb-4 flex items-center gap-2 font-medium text-muted">
                       <span className="material-symbols-outlined text-sm">
@@ -168,7 +178,6 @@ export default function Step1() {
                     </div>
                   </div>
 
-                  {/* Days */}
                   <div>
                     <div className="mb-4 flex items-center justify-between">
                       <label className="flex items-center gap-2 font-medium text-muted">
@@ -177,13 +186,12 @@ export default function Step1() {
                         </span>
                         How long is the stay?
                       </label>
-
                       <span className="text-xl font-bold text-primary">
                         {days} {days === 1 ? "Day" : "Days"}
                       </span>
                     </div>
 
-                    <div className="rounded-2xl bg-white px-5 py-6">
+                    <div className="rounded-2xl border border-border bg-white px-5 py-6">
                       <input
                         className="custom-slider w-full cursor-pointer"
                         type="range"
@@ -192,7 +200,6 @@ export default function Step1() {
                         value={days}
                         onChange={(e) => setDays(Number(e.target.value))}
                       />
-
                       <div className="mt-4 flex justify-between text-[11px] font-bold uppercase tracking-wide text-muted">
                         <span>1 DAY</span>
                         <span>30 DAYS</span>
@@ -203,53 +210,18 @@ export default function Step1() {
                 </div>
               </section>
 
-              {/* TIP */}
-              <section className="relative flex items-start gap-6 rounded-3xl bg-surface-soft p-8">
-                {/* Left Brown Accent */}
-                <div className="absolute left-0 top-0 h-full w-5 bg-primary rounded-l-2xl" />
-
-                {/* Icon */}
-                <div className="relative z-10 rounded-2xl bg-white p-4 shadow-sm">
-                  <span className="material-symbols-outlined text-3xl text-primary">
-                    lightbulb
-                  </span>
-                </div>
-
-                {/* Text */}
-                <div className="relative z-10">
-                  <h4 className="mb-2 text-lg font-bold text-black">
-                    Did you know?
-                  </h4>
-                  <p className="max-w-2xl leading-relaxed text-muted">
-                    Lebanon is one of the few places in the world where you can
-                    ski in the mountains and swim in the Mediterranean sea on
-                    the same day during the spring months of March and April.
-                  </p>
-                </div>
-              </section>
+              <FunFact
+                description="Lebanon is one of the few places where you can ski in the mountains and swim in the Mediterranean on the same day."
+                linkText="Discover Lebanon’s unique geography"
+              />
             </form>
           </div>
 
-          {/* FOOTER */}
-          <div className="px-6 py-6 sm:px-8">
-            <div className="flex items-center justify-end gap-10">
-              <Link
-                to="/step2"
-                className="cursor-pointer font-semibold text-muted transition-colors hover:text-primary"
-              >
-                Skip this step
-              </Link>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                className="cursor-pointer flex items-center gap-2 rounded-full bg-primary px-10 py-4 font-bold text-white shadow-xl shadow-primary/20 transition-transform hover:scale-105 active:scale-95"
-              >
-                Choose Experiences
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </button>
-            </div>
-          </div>
+          <StepNavigation
+            nextTo="/step2"
+            nextLabel="Choose Experiences"
+            skipTo="/step2"
+          />
 
           <div className="h-10" />
         </div>

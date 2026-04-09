@@ -1,9 +1,10 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../common/Button";
 
 export function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isItineraryPage = location.pathname.startsWith("/itinerary");
   const isBudgetPage = location.pathname.startsWith("/budget");
@@ -94,7 +95,9 @@ export function Header() {
 
           {/* Build Trip (hidden on itinerary + budget) */}
           {!isItineraryPage && !isBudgetPage && (
-            <Button>Build My Trip</Button>
+            <Button onClick={() => navigate("/Step1")}>
+              Build My Trip
+            </Button>
           )}
 
           {/* Profile */}

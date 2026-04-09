@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import StepHeader from "../components/StepHeader";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/steps/Navbar";
+import StepHeader from "../components/steps/StepHeader";
+import StepNavigation from "../components/steps/StepNavigation";
+import FunFact from "../components/steps/FunFact";
 
 type Experience = {
   id: string;
@@ -166,7 +168,7 @@ export default function Step2() {
         <div className="overflow-hidden">
           <StepHeader
             stepLabel="Step 2 of 6"
-            title="Pick your experiences"
+            title="Pick your experiences!"
             progressPercent={20}
           />
 
@@ -193,60 +195,20 @@ export default function Step2() {
                   ))}
                 </div>
 
-                {/* Fun fact (same style system as your Step1 tip card) */}
-                <div className="bg-primary/5 border border-primary/10 p-8 rounded-2xl flex flex-col md:flex-row items-center gap-6 mb-24">
-                  <div className="bg-primary/10 p-4 rounded-full flex-shrink-0">
-                    <span className="material-symbols-outlined text-4xl text-primary">
-                      lightbulb
-                    </span>
-                  </div>
-
-                  <div className="flex-grow text-center md:text-left">
-                    <h5 className="text-lg font-bold text-primary mb-1">
-                      Did you know?
-                    </h5>
-                    <p className="text-muted leading-relaxed max-w-2xl">
-                      The Temple of Jupiter in Baalbek features some of the
-                      largest monolithic stones ever quarried, weighing over 800
-                      tons each. Lebanon&apos;s history spans over 7,000 years!
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-2 mt-3 text-sm font-bold text-primary border-b border-primary/30 hover:border-primary transition-colors cursor-pointer"
-                    onClick={() => console.log("Learn more")}
-                  >
-                    Learn more
-                    <span className="material-symbols-outlined text-sm">
-                      arrow_forward
-                    </span>
-                  </button>
-                </div>
+                <FunFact
+                  description="The Temple of Jupiter in Baalbek features some of the largest monolithic stones ever quarried, weighing over 800 tons each. Lebanon's history spans over 7,000 years!"
+                  linkText="Learn more"
+                />
               </section>
             </form>
           </div>
 
-          {/* Bottom buttons */}
-          <div className="px-6 py-6 sm:px-8">
-            <div className="flex items-center justify-end gap-10">
-              <Link
-                to="/step3"
-                className="cursor-pointer font-semibold text-muted transition-colors hover:text-primary"
-              >
-                Skip this step
-              </Link>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                className="cursor-pointer flex items-center gap-2 rounded-full bg-primary px-10 py-4 font-bold text-white shadow-xl shadow-primary/20 transition-transform hover:scale-105 active:scale-95"
-              >
-                Select Nightlife Vibe
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </button>
-            </div>
-          </div>
+          <StepNavigation
+            backTo="/step1"
+            nextTo="/step3"
+            nextLabel="Select Nightlife Vibe"
+            skipTo="/step3"
+          />
 
           <div className="h-10" />
         </div>
