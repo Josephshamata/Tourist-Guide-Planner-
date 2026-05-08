@@ -3,6 +3,9 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
+
+import "./styles/globals.css";
+
 import ScrollToTop from "./Views/components/steps/ScrollToTop";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

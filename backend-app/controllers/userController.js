@@ -1,10 +1,25 @@
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+
+// Generate JWT Token
+const generateToken = (userId) => {
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN || "7d",
+  });
+};
+
+// Cookie options - session cookie
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+};
 
 // REGISTER
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
-    console.log("REQ BODY:", req.body);
+
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "Name, email and password are required",
@@ -25,6 +40,10 @@ exports.registerUser = async (req, res) => {
       phone,
       password,
     });
+
+    const token = generateToken(user._id);
+
+    res.cookie("token", token, cookieOptions);
 
     res.status(201).json({
       message: "User registered successfully",
@@ -64,6 +83,10 @@ exports.loginUser = async (req, res) => {
       });
     }
 
+    const token = generateToken(user._id);
+
+    res.cookie("token", token, cookieOptions);
+
     res.status(200).json({
       message: "Login successful",
       user: {
@@ -79,4 +102,13 @@ exports.loginUser = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+// LOGOUT
+exports.logoutUser = async (req, res) => {
+  res.clearCookie("token", cookieOptions);
+
+  res.status(200).json({
+    message: "Logout successful",
+  });
 };

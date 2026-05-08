@@ -22,3 +22,15 @@ export const loginUser = async (
     body: JSON.stringify(userData),
   });
 };
+
+export const logoutUser = async (): Promise<{ message: string }> => {
+  return apiRequest<{ message: string }>("/logout", {
+    method: "POST",
+  });
+};
+
+export const getProfile = async (): Promise<AuthResponse> => {
+  return apiRequest<AuthResponse>("/profile", {
+    method: "GET",
+  });
+};

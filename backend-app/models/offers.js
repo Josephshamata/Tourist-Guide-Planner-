@@ -54,12 +54,17 @@ const OfferSchema = new mongoose.Schema(
       default: [],
     },
 
+    description: {
+      type: String,
+      default: "",
+    },
+
     isPublished: {
       type: Boolean,
       default: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Offer", OfferSchema);
