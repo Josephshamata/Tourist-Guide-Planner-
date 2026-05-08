@@ -18,14 +18,14 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/itinerary" element={<ItineraryLanding />} />
       </Route>
 
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
 
-      {/* Steps without layout */}
+
 
       <Route path="/step1" element={<Step1 />} />
       <Route path="/step2" element={<Step2 />} />
@@ -34,7 +34,7 @@ export default function AppRoutes() {
       <Route path="/step5" element={<Step5 />} />
       <Route path="/step6" element={<Step6 />} />
 
-      {/* Catch all */}
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

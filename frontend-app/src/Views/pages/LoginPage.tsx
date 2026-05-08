@@ -36,7 +36,7 @@ async function onSubmit(e: React.FormEvent) {
 
     console.log("Login success:", res);
 
-    navigate("/"); // go to home/dashboard
+    navigate("/home"); 
   } catch (err) {
     if (err instanceof Error) {
       setError(err.message);

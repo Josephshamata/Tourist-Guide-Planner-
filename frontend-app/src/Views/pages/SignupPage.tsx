@@ -46,7 +46,7 @@ export default function SignupPage() {
 
       console.log("Registered:", res);
 
-      navigate("/");
+      navigate("/home");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
