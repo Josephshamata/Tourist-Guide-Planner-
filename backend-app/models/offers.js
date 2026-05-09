@@ -63,7 +63,12 @@ const OfferSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+        itineraryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Itinerary",
+    }
   },
+  
   { timestamps: true }
 );
 

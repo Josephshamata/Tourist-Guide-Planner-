@@ -10,12 +10,15 @@ import Step6 from "./Views/pages/Step6";
 
 import { HomePage } from "./Views/pages/HomePage";
 import { MainLayout } from "./Views/layouts/MainLayout";
-import { ItineraryLanding } from "./Views/pages/ItineraryLanding";
+
 import ErrorPage from "./Views/pages/ErrorPage";
 
 import SignupPage from "./Views/pages/SignupPage";
 import LoginPage from "./Views/pages/LoginPage";
 import BudgetManagementPage from "./Views/pages/BudgetManagementPage";
+import ItineraryPage from "./Views/pages/ItineraryPage";
+import ItineraryDayPage from "./Views/pages/ItineraryDayPage";
+import MyTripPage from "./Views/pages/MyTripPage";
 
 export default function AppRoutes() {
   return (
@@ -25,7 +28,12 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route path="/home" element={<HomePage />} />
-          <Route path="/itinerary" element={<ItineraryLanding />} />
+          <Route path="/itinerary" element={<ItineraryPage />} />
+          <Route
+            path="/experiences/:slug/day/:dayNumber"
+            element={<ItineraryDayPage />}
+          />
+          <Route path="/my-trip" element={<MyTripPage />} />
           <Route path="/budget" element={<BudgetManagementPage />} />
         </Route>
 
