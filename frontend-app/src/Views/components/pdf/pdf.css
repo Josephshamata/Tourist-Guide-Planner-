@@ -78,7 +78,8 @@
 } */
  .pdf-screen {
   min-height: 100vh;
-  background: #f5f1ec;
+  /* background: #f5f1ec; */
+    background: #ffffff;
   padding: 40px;
 }
 

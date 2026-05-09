@@ -6,9 +6,13 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const offerRoutes = require("./routes/offerRoutes");
+
+const itineraryRoutes = require("./routes/itineraryRoutes");
+
 const session = require("express-session");
 const passport = require("passport");
 require("./config/passport");
+
 const app = express();
 
 connectDB();
@@ -35,6 +39,7 @@ app.use("/api", authRoutes);
 
 app.use("/api/events", eventRoutes);
 app.use("/api/offers", offerRoutes);
+app.use("/api/itineraries", itineraryRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on http://localhost:5000");

@@ -168,12 +168,14 @@ const getPersonalityOffers = async (req, res) => {
 };
 
 // GET /api/offers/:slug
+
+
 const getOfferBySlug = async (req, res) => {
   try {
     const offer = await Offer.findOne({
       slug: req.params.slug,
       isPublished: true,
-    });
+    }).populate("itineraryId");
 
     if (!offer) {
       return res.status(404).json({
@@ -184,15 +186,18 @@ const getOfferBySlug = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: offer,
+      offer,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Failed to fetch offer",
-      error: error.message,
+      message: error.message,
     });
   }
+};
+
+module.exports = {
+  getOfferBySlug,
 };
 
 module.exports = {

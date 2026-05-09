@@ -13,6 +13,9 @@
   /* Brand */
   --primary: #790c13;
   --accent-soft: #f4ebe7;
+  --primary-5: rgba(121, 12, 19, 0.05);
+--primary-10: rgba(121, 12, 19, 0.08);
+--primary-15: rgba(121, 12, 19, 0.12);
 
   /* Text */
   --text-dark: #1e293b;

@@ -7,8 +7,13 @@
 
 @theme {
   /* Core */
+
   --color-primary: #7c2d12;
   --color-bg-light: #f8f5f5;
+
+  --color-primary: #790c13;
+  --color-bg-light: #F8F5F5;
+
   --color-bg-dark: #121212;
 
   /* Surfaces */

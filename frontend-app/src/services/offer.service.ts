@@ -102,10 +102,8 @@ export async function getPersonalityOffers(): Promise<Offer[]> {
   return response.data;
 }
 
-export async function getOfferBySlug(slug: string): Promise<Offer> {
-  const response = await apiRequest<OfferResponse>(`/offers/${slug}`, {
-    method: "GET",
-  });
 
-  return response.data;
+
+export async function getOfferBySlug(slug: string) {
+  return apiRequest(`/offers/${slug}`);
 }
