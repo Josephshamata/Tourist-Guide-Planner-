@@ -32,25 +32,29 @@ function ComfortCard({
       ].join(" ")}
     >
       <div
-        className="h-full w-full bg-cover bg-center flex flex-col justify-between p-4"
-        style={{ backgroundImage: `url(${imageUrl})` }}
-      >
-        {/* 🔥 TOP RIGHT CHECK */}
-        <div className="flex justify-end">
-          {selected ? (
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-lg">
-              <span className="material-symbols-outlined text-base">check</span>
-            </div>
-          ) : (
-            <div className="h-9 w-9" />
-          )}
+  className="h-full w-full bg-cover bg-center"
+  style={{ backgroundImage: `url(${imageUrl})` }}
+>
+  <div className="h-full w-full bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 flex flex-col justify-between">
+    
+    {/* TOP RIGHT CHECK */}
+    <div className="flex justify-end">
+      {selected ? (
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-lg">
+          <span className="material-symbols-outlined text-base">check</span>
         </div>
+      ) : (
+        <div className="h-9 w-9" />
+      )}
+    </div>
 
-        {/* TITLE */}
-        <div className="bg-gradient-to-b from-transparent to-black/80 p-3 rounded-lg">
-          <p className="text-white text-lg font-bold">{title}</p>
-        </div>
-      </div>
+    {/* TITLE */}
+    <div className="text-white">
+      <p className="text-lg font-bold">{title}</p>
+    </div>
+
+  </div>
+</div>
     </button>
   );
 }
@@ -105,8 +109,7 @@ export default function Step5() {
   const navigate = useNavigate();
 
   const [comfort, setComfort] = useState<Comfort>("balanced");
-  const [stay, setStay] = useState<Stay>("beach");
-
+  const [stay, setStay] = useState<Stay | null>(null);
   const handleNext = () => {
     console.log({ comfort, stay });
     navigate("/step6");
@@ -166,33 +169,33 @@ export default function Step5() {
             {/* SECTION 2 */}
             <section className="flex flex-col gap-6">
               <h2 className="text-2xl font-bold">
-                Where would you like to stay?
+                Where would you like to stay? (Optional)
               </h2>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <StayCard
                   active={stay === "boutique"}
-                  onClick={() => setStay("boutique")}
+                  onClick={() => setStay(stay === "boutique" ? null : "boutique")}
                   icon="apartment"
                   label="Boutique Hotel"
                 />
                 <StayCard
                   active={stay === "beach"}
-                  onClick={() => setStay("beach")}
+                  onClick={() => setStay(stay === "beach" ? null : "beach")}
                   icon="beach_access"
                   label="Beach Resort"
                 />
                 <StayCard
                   active={stay === "mountain"}
-                  onClick={() => setStay("mountain")}
+                  onClick={() => setStay(stay === "mountain" ? null : "mountain")}
                   icon="landscape"
                   label="Mountain Lodge"
                 />
                 <StayCard
                   active={stay === "guesthouse"}
-                  onClick={() => setStay("guesthouse")}
+                  onClick={() => setStay(stay === "guesthouse" ? null : "guesthouse")}
                   icon="home"
-                  label="Guesthouse"
+                  label="Airbnb"
                 />
               </div>
             </section>

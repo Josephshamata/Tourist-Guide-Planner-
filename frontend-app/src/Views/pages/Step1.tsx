@@ -5,6 +5,8 @@ import StepHeader from "../components/steps/StepHeader";
 import TravelPartyCard from "../components/steps/TravelPartyCard";
 import StepNavigation from "../components/steps/StepNavigation";
 import FunFact from "../components/steps/FunFact";
+import { AppSelect } from "../components/common/AppSelect";
+import type { SelectOption } from "../components/common/AppSelect";
 
 type TravelParty = "solo" | "friends" | "family" | "romantic";
 type AgeRange = "18-25" | "26-35" | "36-45" | "46-55" | "55+";
@@ -14,7 +16,22 @@ export default function Step1() {
 
   const [travelParty, setTravelParty] = useState<TravelParty | null>("solo");
   const [ageRange, setAgeRange] = useState<AgeRange | null>("26-35");
-  const [month, setMonth] = useState<string>("July 2024");
+  const monthOptions: SelectOption[] = Array.from({ length: 12 }, (_, i) => {
+  const date = new Date();
+  date.setMonth(date.getMonth() + i);
+
+  const label = date.toLocaleString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+
+  return {
+    value: label,
+    label,
+  };
+});
+
+const [month, setMonth] = useState<string>(monthOptions[0].value);
   const [days, setDays] = useState<number>(14);
 
   const travelCards = useMemo(
@@ -162,20 +179,12 @@ export default function Step1() {
                       When are you coming?
                     </label>
 
-                    <div className="flex items-center gap-3 rounded-2xl border-2 border-primary bg-white px-5 py-4">
-                      <select
-                        value={month}
-                        onChange={(e) => setMonth(e.target.value)}
-                        className="w-full cursor-pointer appearance-none bg-transparent text-black outline-none"
-                      >
-                        <option value="July 2024">July 2024</option>
-                        <option value="August 2024">August 2024</option>
-                        <option value="September 2024">September 2024</option>
-                      </select>
-                      <span className="material-symbols-outlined text-primary cursor-pointer">
-                        expand_more
-                      </span>
-                    </div>
+                    <AppSelect
+                      value={month}
+                      options={monthOptions}
+                      onChange={setMonth}
+                      placeholder="Select month"
+                    />
                   </div>
 
                   <div>
@@ -191,7 +200,7 @@ export default function Step1() {
                       </span>
                     </div>
 
-                    <div className="rounded-2xl border border-border bg-white px-5 py-6">
+                    <div className="rounded-2xl border border-border bg-primary/99 px-5 py-6 ">
                       <input
                         className="custom-slider w-full cursor-pointer"
                         type="range"

@@ -57,7 +57,7 @@ export default function LoginPage() {
       <AuthCard>
         <div className="mb-8">
           <h2 className="text-[32px] leading-[40px] font-extrabold text-[var(--text-dark)]">
-            Welcome Back
+            Welcome Back!
           </h2>
           <p className="mt-2 text-[var(--slate-500)]">
             Sign in to continue your journey.
@@ -101,7 +101,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full h-12 rounded-full bg-[var(--primary)] text-red-900 font-bold transition hover:opacity-95 disabled:opacity-60"
+            className="w-full h-12 rounded-full bg-[var(--primary)] text-white font-bold shadow-lg shadow-primary/20 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
           >
             {loading ? "Signing in..." : "Log In"}
           </button>
@@ -111,8 +111,13 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className="w-full h-12 rounded-full border border-[var(--slate-200)] bg-white text-[var(--text-dark)] font-semibold"
+            className="w-full h-12 rounded-full border border-[var(--slate-200)] bg-white text-[var(--text-dark)] font-semibold shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-3"
           >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            className="w-5 h-5"
+          />
             Continue with Google
           </button>
           <AuthFooterLink

@@ -245,60 +245,6 @@ export default function Step4() {
                   />
                 </div>
               </section>
-
-              {/* Section 3 */}
-              <section className="flex flex-col gap-6">
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">
-                    explore
-                  </span>
-                  <h2 className="text-2xl font-bold text-black">
-                    Food Exploration Level
-                  </h2>
-                </div>
-
-                <div className="flex flex-wrap gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setExploration("safe")}
-                    className={[
-                      "cursor-pointer px-8 py-4 rounded-full transition-all text-sm font-bold",
-                      exploration === "safe"
-                        ? "border-2 border-primary bg-primary text-white shadow-lg shadow-primary/20"
-                        : "border border-primary/20 bg-white hover:bg-primary/5",
-                    ].join(" ")}
-                  >
-                    Safe &amp; Familiar
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setExploration("balanced")}
-                    className={[
-                      "cursor-pointer px-8 py-4 rounded-full transition-all text-sm font-bold",
-                      exploration === "balanced"
-                        ? "border-2 border-primary bg-primary text-white shadow-lg shadow-primary/20"
-                        : "border border-primary/20 bg-white hover:bg-primary/5",
-                    ].join(" ")}
-                  >
-                    Balanced Mix
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setExploration("adventurous")}
-                    className={[
-                      "cursor-pointer px-8 py-4 rounded-full transition-all text-sm font-bold",
-                      exploration === "adventurous"
-                        ? "border-2 border-primary bg-primary text-white shadow-lg shadow-primary/20"
-                        : "border border-primary/20 bg-white hover:bg-primary/5",
-                    ].join(" ")}
-                  >
-                    Adventurous Eater
-                  </button>
-                </div>
-              </section>
-
               <FunFact description="The Lebanese Mediterranean diet is considered one of the healthiest in the world. It's naturally rich in extra-virgin olive oil, fresh mountain-grown vegetables, and lean proteins. You can indulge your palate while nourishing your body!" />
             </form>
           </div>

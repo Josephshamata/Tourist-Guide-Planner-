@@ -90,7 +90,7 @@ export function Header() {
         </nav>
 
         {/* Right Side */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 ">
           {/* Plan Trip CTA */}
           <Button onClick={() => navigate("/Step1")}>
             Plan My Trip
@@ -115,7 +115,7 @@ export function Header() {
               </button>
 
               {openMenu && (
-                <div className="absolute right-0 mt-3 w-52 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
+                <div className="absolute right-0 mt-3 w-52 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl ">
                   {/* User Info */}
                   <div className="border-b border-slate-100 px-3 py-3">
                     <p className="text-sm font-bold text-slate-900">
