@@ -43,11 +43,9 @@ export default function SignupPage() {
 
       console.log("Registered:", res);
 
-
       // sessionStorage.setItem("tabAuthenticated", "true");
 
       window.location.assign("/home");
-
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -58,6 +56,9 @@ export default function SignupPage() {
       setLoading(false);
     }
   }
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:5000/api/auth/google";
+  };
 
   return (
     <AuthLayout
@@ -130,11 +131,11 @@ export default function SignupPage() {
 
           <button
             type="button"
-            className="w-full h-12 rounded-full border border-[var(--slate-200)] bg-white text-[var(--text-dark)] font-semibold hover:border-[var(--primary)] transition"
+            onClick={handleGoogleLogin}
+            className="w-full h-12 rounded-full border border-[var(--slate-200)] bg-white text-[var(--text-dark)] font-semibold"
           >
             Continue with Google
           </button>
-
           <AuthFooterLink
             text="Already have an account?"
             linkText="Log in"

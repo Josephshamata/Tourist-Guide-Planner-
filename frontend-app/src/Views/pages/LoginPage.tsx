@@ -7,7 +7,6 @@ import AuthDivider from "../components/auth/AuthDivider";
 import AuthFooterLink from "../components/auth/AuthFooterLink";
 import { handleLogin } from "../../controllers/auth.controller";
 
-
 export default function LoginPage() {
   const [form, setForm] = useState({
     email: "",
@@ -24,32 +23,32 @@ export default function LoginPage() {
     }));
   }
 
-async function onSubmit(e: React.FormEvent) {
-  e.preventDefault();
-  setError("");
-  setLoading(true);
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  try {
-    const res = await handleLogin(form);
+    try {
+      const res = await handleLogin(form);
 
-    console.log("Login success:", res);
+      console.log("Login success:", res);
 
+      // sessionStorage.setItem("tabAuthenticated", "true");
 
-    // sessionStorage.setItem("tabAuthenticated", "true");
-
-    window.location.assign("/home");
-
-  } catch (err) {
-    if (err instanceof Error) {
-      setError(err.message);
-    } else {
-      setError("Something went wrong.");
+      window.location.assign("/home");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong.");
+      }
+    } finally {
+      setLoading(false);
     }
-  } finally {
-    setLoading(false);
   }
-}
-
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:5000/api/auth/google";
+  };
   return (
     <AuthLayout
       title="Log In"
@@ -111,11 +110,11 @@ async function onSubmit(e: React.FormEvent) {
 
           <button
             type="button"
-            className="w-full h-12 rounded-full border border-[var(--slate-200)] bg-white text-[var(--text-dark)] font-semibold hover:border-[var(--primary)] transition"
+            onClick={handleGoogleLogin}
+            className="w-full h-12 rounded-full border border-[var(--slate-200)] bg-white text-[var(--text-dark)] font-semibold"
           >
             Continue with Google
           </button>
-
           <AuthFooterLink
             text="Don’t have an account?"
             linkText="Sign up"

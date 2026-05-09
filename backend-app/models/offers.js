@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const OfferSchema = new mongoose.Schema(
   {
+    itineraryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Itinerary",
+    },
     title: {
       type: String,
       required: true,

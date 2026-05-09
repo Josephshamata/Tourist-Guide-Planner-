@@ -1,67 +1,23 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const activitySchema = new mongoose.Schema(
   {
     time: String,
-
     title: String,
-
     description: String,
-
     imageUrl: String,
-
     location: String,
-
     region: String,
-
-    activityType: {
-      type: String,
-      enum: [
-        "food",
-        "hotel",
-        "beach",
-        "nightlife",
-        "nature",
-        "adventure",
-        "culture",
-        "shopping",
-        "transport",
-        "relaxation",
-      ],
-    },
-
-    estimatedPrice: {
-      type: Number,
-      default: 0,
-    },
-
+    activityType: String,
+    estimatedPrice: Number,
     durationHours: Number,
-
     tags: [String],
 
-    placeId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Place",
-    },
-
     booking: {
-      isReserved: {
-        type: Boolean,
-        default: false,
-      },
-
-      reservationStatus: {
-        type: String,
-        enum: ["pending", "confirmed", "cancelled"],
-        default: "pending",
-      },
-
+      isReserved: Boolean,
+      reservationStatus: String,
       reservationReference: String,
-
-      reservedFor: {
-        type: Number,
-        default: 1,
-      },
+      reservedFor: Number,
 
       contactInfo: {
         placeName: String,
@@ -125,6 +81,21 @@ const itinerarySchema = new mongoose.Schema(
     categories: [String],
 
     mainPlaces: [String],
+
+    tripStatus: {
+      type: String,
+      enum: ["upcoming", "completed", "cancelled"],
+      default: "upcoming",
+    },
+
+    startDate: Date,
+    endDate: Date,
+
+    bookingStatus: {
+      type: String,
+      enum: ["pending", "confirmed", "cancelled"],
+      default: "confirmed",
+    },
 
     hotel: {
       name: String,
@@ -227,5 +198,4 @@ const itinerarySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-export default mongoose.model("Itinerary", itinerarySchema);
+module.exports = mongoose.model("Itinerary", itinerarySchema);

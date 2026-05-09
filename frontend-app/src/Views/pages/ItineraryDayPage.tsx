@@ -1,83 +1,140 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { apiRequest } from "../../services/api";
+import type { Itinerary, ItineraryDay } from "../../models/itinerary.model";
+
+
 import DayHeaderCard from "../itinerary/days/DayHeaderCard";
 import DaySummaryCard from "../itinerary/days/DaySummaryCard";
 import DayActivityTimeline from "../itinerary/days/DayActivityTimeline";
 import DayBreadcrumb from "../itinerary/days/DayBreadCrumb";
 
-
+type OfferWithItineraryResponse = {
+  success: boolean;
+  offer: {
+    title: string;
+    slug: string;
+    itineraryId: Itinerary;
+  };
+};
 
 export default function ItineraryDayPage() {
+  const { slug, dayNumber } = useParams();
+
+  const [itinerary, setItinerary] = useState<Itinerary | null>(null);
+  const [day, setDay] = useState<ItineraryDay | null>(null);
+  const [loading, setLoading] = useState(true);
+  
+
+  useEffect(() => {
+    const fetchDay = async () => {
+      try {
+        if (!slug || !dayNumber) return;
+
+        const data = await apiRequest<OfferWithItineraryResponse>(
+          `/offers/${slug}`
+        );
+
+        const fetchedItinerary = data.offer.itineraryId;
+        const selectedDay = fetchedItinerary.days.find(
+  (item) => item.dayNumber === Number(dayNumber)
+);
+
+        setItinerary(fetchedItinerary);
+        setDay(selectedDay || null);
+      } catch (error) {
+        console.error("Failed to fetch day:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDay();
+  }, [slug, dayNumber]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg-light)]">
+        <p className="font-semibold text-[var(--text-dark)]">
+          Loading day details...
+        </p>
+      </div>
+    );
+  }
+
+  if (!itinerary || !day) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg-light)]">
+        <p className="font-semibold text-[var(--text-dark)]">
+          Day not found.
+        </p>
+      </div>
+    );
+  }
+
+  const totalDuration =
+    day.activities?.reduce(
+      (sum, activity) => sum + (activity.durationHours || 0),
+      0
+    ) || 0;
+
+  function fetchDay(): void {
+    throw new Error("Function not implemented.");
+  }
+  
+
   return (
     <div className="min-h-screen bg-[var(--bg-light)]">
       <main className="mx-auto max-w-[1500px] px-6 py-10 xl:px-10">
-          <DayBreadcrumb
-            tripName="The Socialite"
-            itinerarySlug="the-socialite"
-            dayNumber={1}
-            source="experience"
-          />
+        <DayBreadcrumb
+          tripName={itinerary.title}
+          itinerarySlug={slug || ""}
+          dayNumber={day.dayNumber}
+          source="experience"
+        />
+
         <DayHeaderCard
-          imageUrl="/images/sunset.png"
-          tripName="The Socialite"
-          dayNumber={1}
-          title="Arrival & Rooftop Sunset"
-          region="Beirut"
-          durationLabel="3 Days Itinerary"
-          estimatedCost={180}
+          imageUrl={day.activities?.[0]?.imageUrl || itinerary.coverImage || "/images/sunset.png"}
+          tripName={itinerary.title}
+          dayNumber={day.dayNumber}
+          title={day.title}
+          region={day.region || "Lebanon"}
+          durationLabel={`${itinerary.durationDays || 1} Days Itinerary`}
+          estimatedCost={day.estimatedDayPrice || 0}
         />
 
         <DaySummaryCard
-          description="Start your trip with a smooth arrival and settle into the city vibes. Enjoy a romantic sunset rooftop experience to kick off your Socialite adventure."
-          totalActivities={2}
-          totalDuration={4}
+          description={`This day includes ${day.activities?.length || 0} curated experiences across ${day.region || "Lebanon"}.`}
+          totalActivities={day.activities?.length || 0}
+          totalDuration={totalDuration}
         />
 
         <DayActivityTimeline
-  activities={[
-    {
-      time: "2:00 PM",
-      title: "VIP Airport Pickup",
-      description:
-        "Private luxury transfer from Beirut International Airport to your downtown hotel with a professional chauffeur and comfortable premium vehicle.",
-      imageUrl: "/images/driver.png",
-      location: "Beirut Airport",
-      region: "Beirut",
-      durationHours: 1,
-      activityType: "Transport",
-      estimatedPrice: 40,
-      reservationReference: "DRV-1100",
-      reservationStatus: "confirmed",
-      reservedFor: 2,
-      placeName: "961 Chauffeurs",
-      phone: "+961 70 111 222",
-      whatsapp: "+961 70 111 222",
-      instagram: "@961chauffeurs",
-      website: "961chauffeurs.com",
-      meetingPoint: "Arrival Hall, Beirut-Rafic Hariri International Airport",
-      note: "Please be ready at the arrivals gate. Your driver will hold a sign with your name.",
-    },
-    {
-      time: "7:30 PM",
-      title: "Sunset Rooftop Lounge",
-      description:
-        "Cocktails, sunset views, and live DJ sets overlooking Beirut Marina in one of the city’s premium rooftop lounges.",
-      imageUrl: "/images/sunset.png",
-      location: "Zaitunay Bay",
-      region: "Beirut",
-      durationHours: 3,
-      activityType: "Nightlife",
-      estimatedPrice: 60,
-      reservationReference: "NFT-2200",
-      reservationStatus: "pending",
-      reservedFor: 2,
-      placeName: "Skyline Beirut",
-      phone: "+961 78 888 777",
-      whatsapp: "+961 78 888 777",
-      instagram: "@skylinebeirut",
-      website: "skylinebeirut.com",
-      meetingPoint: "Skyline Beirut reception desk",
-      note: "Smart casual dress code is recommended. Reservation is held for 15 minutes.",
-    },
-  ]}
+  itineraryId={itinerary._id}
+  onRefresh={fetchDay}
+  activities={(day.activities || []).map((activity) => ({
+    activityId: activity._id || "",
+    time: activity.time || "",
+    title: activity.title,
+    description: activity.description || "",
+    imageUrl: activity.imageUrl || "/images/sunset.png",
+    location: activity.location || "Lebanon",
+    region: activity.region,
+    durationHours: activity.durationHours || 0,
+    activityType: activity.activityType || "Experience",
+    estimatedPrice: activity.estimatedPrice || 0,
+    reservationReference: activity.booking?.reservationReference || "N/A",
+    reservationStatus: activity.booking?.reservationStatus || "pending",
+    reservedFor: activity.booking?.reservedFor || 2,
+    placeName: activity.booking?.contactInfo?.placeName || activity.title,
+    phone: activity.booking?.contactInfo?.phone || "Not available",
+    whatsapp: activity.booking?.contactInfo?.whatsapp,
+    instagram: activity.booking?.contactInfo?.instagram,
+    website: activity.booking?.contactInfo?.website,
+    meetingPoint: activity.location || "Meeting point to be confirmed",
+    note: "Final confirmation will be shared before the trip.",
+  }))}
 />
       </main>
     </div>

@@ -1,24 +1,109 @@
 import type { Offer } from "../models/offer.model";
+import { apiRequest } from "./api";
 
+export type OffersResponse = {
+  success: boolean;
+  count: number;
+  total: number;
+  currentPage: number;
+  totalPages: number;
+  data: Offer[];
+};
 
-const API_BASE_URL = "http://localhost:5000/api";
+export type OfferResponse = {
+  success: boolean;
+  data: Offer;
+};
 
-export async function getSignatureOffers(): Promise<Offer[]> {
-  const response = await fetch(`${API_BASE_URL}/offers/signature`);
+export type OfferFilters = {
+  search?: string;
+  category?: string;
+  region?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  minDays?: string;
+  maxDays?: string;
+  sort?: string;
+  page?: number;
+  limit?: number;
+};
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch signature offers");
+const buildQuery = (filters: OfferFilters = {}) => {
+  const params = new URLSearchParams();
+
+  if (filters.search) {
+    params.append("search", filters.search);
   }
 
-  return response.json();
+  if (filters.category && filters.category !== "all") {
+    params.append("category", filters.category);
+  }
+
+  if (filters.region && filters.region !== "All Regions") {
+    params.append("region", filters.region);
+  }
+
+  if (filters.minPrice) {
+    params.append("minPrice", filters.minPrice);
+  }
+
+  if (filters.maxPrice) {
+    params.append("maxPrice", filters.maxPrice);
+  }
+
+  if (filters.minDays) {
+    params.append("minDays", filters.minDays);
+  }
+
+  if (filters.maxDays) {
+    params.append("maxDays", filters.maxDays);
+  }
+
+  if (filters.sort) {
+    params.append("sort", filters.sort);
+  }
+
+  if (filters.page) {
+    params.append("page", String(filters.page));
+  }
+
+  if (filters.limit) {
+    params.append("limit", String(filters.limit));
+  }
+
+  const query = params.toString();
+
+  return query ? `?${query}` : "";
+};
+
+export async function getOffers(
+  filters: OfferFilters = {},
+): Promise<OffersResponse> {
+  const query = buildQuery(filters);
+
+  return apiRequest<OffersResponse>(`/offers${query}`, {
+    method: "GET",
+  });
+}
+
+export async function getSignatureOffers(): Promise<Offer[]> {
+  const response = await apiRequest<OffersResponse>("/offers/signature", {
+    method: "GET",
+  });
+
+  return response.data;
 }
 
 export async function getPersonalityOffers(): Promise<Offer[]> {
-  const response = await fetch(`${API_BASE_URL}/offers/personality`);
+  const response = await apiRequest<OffersResponse>("/offers/personality", {
+    method: "GET",
+  });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch personality offers");
-  }
+  return response.data;
+}
 
-  return response.json();
+
+
+export async function getOfferBySlug(slug: string) {
+  return apiRequest(`/offers/${slug}`);
 }

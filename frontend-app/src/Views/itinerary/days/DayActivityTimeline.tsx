@@ -10,7 +10,13 @@ import {
   MessageCircle,
 } from "lucide-react";
 
+import { apiRequest } from "../../../services/api";
+
+type ReservationStatus = "confirmed" | "pending" | "cancelled";
+
 type DayActivity = {
+  activityId: string;
+
   time: string;
   title: string;
   description: string;
@@ -22,7 +28,7 @@ type DayActivity = {
   estimatedPrice?: number;
 
   reservationReference: string;
-  reservationStatus: "confirmed" | "pending" | "cancelled";
+  reservationStatus: ReservationStatus;
   reservedFor?: number;
 
   placeName: string;
@@ -36,38 +42,56 @@ type DayActivity = {
 };
 
 type DayActivityTimelineProps = {
+  itineraryId: string;
   activities: DayActivity[];
+  onRefresh: () => void;
 };
 
 export default function DayActivityTimeline({
+  itineraryId,
   activities,
+  onRefresh,
 }: DayActivityTimelineProps) {
-  const handleConfirm = (reservationId: string) => {
-    console.log("CONFIRM:", reservationId);
+ const handleConfirm = async (activityId: string) => {
+  try {
+    await apiRequest(
+      `/itineraries/${itineraryId}/activities/${activityId}/confirm`,
+      {
+        method: "PATCH",
+      }
+    );
 
-    // later:
-    // PATCH reservation status → confirmed
-  };
+    onRefresh();
+  } catch (error) {
+    console.error("Failed to confirm activity:", error);
+  }
+};
 
-  const handleDecline = (reservationId: string) => {
-    console.log("DECLINE:", reservationId);
+  const handleDecline = async (activityId: string) => {
+    try {
+      await apiRequest(
+        `/itineraries/${itineraryId}/activities/${activityId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-    // later:
-    // DELETE activity from itinerary
+      onRefresh();
+    } catch (error) {
+      console.error("Failed to decline activity:", error);
+    }
   };
 
   return (
     <section className="mt-8">
       <div className="relative space-y-8">
-        {/* Timeline vertical line */}
         <div className="absolute left-[120px] top-0 hidden h-full w-px bg-[var(--primary-20)] md:block" />
 
         {activities.map((activity) => (
           <article
-            key={activity.reservationReference}
+            key={activity.activityId || activity.reservationReference}
             className="relative grid gap-5 md:grid-cols-[170px_1fr]"
           >
-            {/* Time */}
             <div className="relative flex justify-start">
               <span className="h-fit rounded-full border border-[var(--border)] bg-white px-5 py-2 text-sm font-extrabold text-[var(--primary)] shadow-sm">
                 {activity.time}
@@ -76,17 +100,14 @@ export default function DayActivityTimeline({
               <span className="absolute left-[114px] top-4 hidden h-4 w-4 rounded-full border-[5px] border-white bg-[var(--primary)] shadow md:block" />
             </div>
 
-            {/* Card */}
             <div className="overflow-hidden rounded-[1.5rem] border border-[var(--border)] bg-white shadow-soft-red">
               <div className="grid gap-6 p-5 lg:grid-cols-[260px_1fr_250px]">
-                {/* Image */}
                 <img
                   src={activity.imageUrl}
                   alt={activity.title}
                   className="h-48 w-full rounded-2xl object-cover"
                 />
 
-                {/* Main Content */}
                 <div>
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <h3 className="text-2xl font-extrabold text-[var(--text-dark)]">
@@ -100,7 +121,6 @@ export default function DayActivityTimeline({
                     {activity.description}
                   </p>
 
-                  {/* Info Grid */}
                   <div className="mt-5 grid gap-3 sm:grid-cols-2">
                     <InfoPill
                       icon={MapPin}
@@ -127,7 +147,6 @@ export default function DayActivityTimeline({
                     />
                   </div>
 
-                  {/* Meeting Point */}
                   {activity.meetingPoint && (
                     <div className="mt-5 rounded-2xl bg-[var(--bg-light)] p-4">
                       <p className="text-xs font-bold uppercase tracking-wide text-[var(--primary)]">
@@ -140,7 +159,6 @@ export default function DayActivityTimeline({
                     </div>
                   )}
 
-                  {/* Important Note */}
                   {activity.note && (
                     <div className="mt-4 rounded-2xl bg-[var(--accent-soft)] p-4">
                       <p className="text-xs font-bold uppercase tracking-wide text-[var(--primary)]">
@@ -154,7 +172,6 @@ export default function DayActivityTimeline({
                   )}
                 </div>
 
-                {/* Contact */}
                 <div className="border-t border-[var(--border)] pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
                   <p className="text-xs font-bold uppercase tracking-wide text-[var(--text-dark)]/40">
                     Booking Contact
@@ -202,13 +219,9 @@ export default function DayActivityTimeline({
                 </div>
               </div>
 
-              {/* Bottom Reservation Bar */}
               <div className="mx-5 mb-5 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-[var(--bg-light)] px-5 py-3">
                 <div className="flex items-center gap-2 text-sm text-[var(--text-dark)]/70">
-                  <WalletCards
-                    size={17}
-                    className="text-[var(--primary)]"
-                  />
+                  <WalletCards size={17} className="text-[var(--primary)]" />
 
                   Reservation:
                   <span className="font-bold text-[var(--text-dark)]">
@@ -216,22 +229,19 @@ export default function DayActivityTimeline({
                   </span>
                 </div>
 
-                {/* Actions */}
                 {activity.reservationStatus === "pending" ? (
                   <div className="flex items-center gap-3">
                     <button
-                      onClick={() =>
-                        handleConfirm(activity.reservationReference)
-                      }
+                      type="button"
+                      onClick={() => handleConfirm(activity.activityId)}
                       className="rounded-full bg-green-600 px-5 py-2 text-sm font-bold text-white transition hover:bg-green-700"
                     >
                       Confirm
                     </button>
 
                     <button
-                      onClick={() =>
-                        handleDecline(activity.reservationReference)
-                      }
+                      type="button"
+                      onClick={() => handleDecline(activity.activityId)}
                       className="rounded-full border border-red-200 bg-red-50 px-5 py-2 text-sm font-bold text-red-700 transition hover:bg-red-100"
                     >
                       Decline
@@ -249,15 +259,7 @@ export default function DayActivityTimeline({
   );
 }
 
-/* =========================================
-   STATUS BADGE
-========================================= */
-
-function StatusBadge({
-  status,
-}: {
-  status: "confirmed" | "pending" | "cancelled";
-}) {
+function StatusBadge({ status }: { status: ReservationStatus }) {
   return (
     <span
       className={[
@@ -274,10 +276,6 @@ function StatusBadge({
     </span>
   );
 }
-
-/* =========================================
-   INFO PILL
-========================================= */
 
 function InfoPill({
   icon: Icon,
@@ -301,10 +299,6 @@ function InfoPill({
     </div>
   );
 }
-
-/* =========================================
-   CONTACT ROW
-========================================= */
 
 function ContactRow({
   icon: Icon,
