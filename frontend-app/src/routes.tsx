@@ -17,6 +17,7 @@ import SignupPage from "./Views/pages/SignupPage";
 import LoginPage from "./Views/pages/LoginPage";
 import BudgetManagementPage from "./Views/pages/BudgetManagementPage";
 import ExperiencesPage from "./Views/pages/ExperiencesPage";
+import { ItineraryPdfPreview } from "./Views/components/pdf/ItineraryPdfPreview";
 
 export default function AppRoutes() {
   return (
@@ -38,7 +39,8 @@ export default function AppRoutes() {
         <Route path="/step5" element={<Step5 />} />
         <Route path="/step6" element={<Step6 />} />
       </Route>
-
+      <Route path="/pdf" element={<ItineraryPdfPreview />} />
+      
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />

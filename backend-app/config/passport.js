@@ -17,7 +17,7 @@ passport.use(
           email: profile.emails[0].value,
         });
 
-        // Create user if doesn't exist
+       
         if (!user) {
           user = await User.create({
             name: profile.displayName,
