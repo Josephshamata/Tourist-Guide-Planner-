@@ -16,6 +16,7 @@ import ErrorPage from "./Views/pages/ErrorPage";
 import SignupPage from "./Views/pages/SignupPage";
 import LoginPage from "./Views/pages/LoginPage";
 import BudgetManagementPage from "./Views/pages/BudgetManagementPage";
+import ExperiencesPage from "./Views/pages/ExperiencesPage";
 
 export default function AppRoutes() {
   return (
@@ -27,6 +28,7 @@ export default function AppRoutes() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/itinerary" element={<ItineraryLanding />} />
           <Route path="/budget" element={<BudgetManagementPage />} />
+          <Route path="/experiences" element={<ExperiencesPage />} />
         </Route>
 
         <Route path="/step1" element={<Step1 />} />

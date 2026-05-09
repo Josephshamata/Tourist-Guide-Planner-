@@ -1,40 +1,76 @@
 const Offer = require("../models/offers");
 
 // GET /api/offers
-// Supports: ?type=signature&category=luxury&search=beirut&limit=8&page=1
 const getAllOffers = async (req, res) => {
   try {
     const {
-      type,
-      category,
       search,
+      category,
+      region,
+      minPrice,
+      maxPrice,
+      minDays,
+      maxDays,
       sort = "recommended",
       page = 1,
-      limit = 8,
+      limit = 12,
     } = req.query;
 
     const query = {
       isPublished: true,
     };
 
-    if (type && type !== "all") {
-      query.type = type;
-    }
-
-    if (category && category !== "all") {
-      query.categories = {
-        $in: [category.toLowerCase()],
-      };
-    }
-
+    // Search
     if (search) {
       query.$or = [
         { title: { $regex: search, $options: "i" } },
         { mainPlaces: { $regex: search, $options: "i" } },
         { categories: { $regex: search, $options: "i" } },
         { hotelName: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
       ];
+    }
+
+    // Category
+    if (category && category !== "all") {
+      query.categories = {
+        $in: [category],
+      };
+    }
+
+    // Region
+    if (region && region !== "All Regions") {
+      query.mainPlaces = {
+        $regex: region,
+        $options: "i",
+      };
+    }
+
+    // Price range
+    if (minPrice || maxPrice) {
+      query.totalPrice = {};
+
+      if (minPrice && maxPrice) {
+        query.totalPrice.$gte = Number(minPrice);
+        query.totalPrice.$lte = Number(maxPrice);
+      } else if (minPrice) {
+        query.totalPrice = Number(minPrice);
+      } else if (maxPrice) {
+        query.totalPrice = Number(maxPrice);
+      }
+    }
+
+    // Duration range
+    if (minDays || maxDays) {
+      query.days = {};
+
+      if (minDays && maxDays) {
+        query.days.$gte = Number(minDays);
+        query.days.$lte = Number(maxDays);
+      } else if (minDays) {
+        query.days = Number(minDays);
+      } else if (maxDays) {
+        query.days = Number(maxDays);
+      }
     }
 
     let sortOption = { createdAt: -1 };
@@ -55,13 +91,12 @@ const getAllOffers = async (req, res) => {
       sortOption = { days: -1 };
     }
 
-    const skip = (Number(page) - 1) * Number(limit);
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
+    const skip = (pageNumber - 1) * limitNumber;
 
     const [offers, total] = await Promise.all([
-      Offer.find(query)
-        .sort(sortOption)
-        .skip(skip)
-        .limit(Number(limit)),
+      Offer.find(query).sort(sortOption).skip(skip).limit(limitNumber),
       Offer.countDocuments(query),
     ]);
 
@@ -69,8 +104,8 @@ const getAllOffers = async (req, res) => {
       success: true,
       count: offers.length,
       total,
-      currentPage: Number(page),
-      totalPages: Math.ceil(total / Number(limit)),
+      currentPage: pageNumber,
+      totalPages: Math.ceil(total / limitNumber),
       data: offers,
     });
   } catch (error) {
@@ -93,6 +128,9 @@ const getSignatureOffers = async (req, res) => {
     res.status(200).json({
       success: true,
       count: offers.length,
+      total: offers.length,
+      currentPage: 1,
+      totalPages: 1,
       data: offers,
     });
   } catch (error) {
@@ -115,6 +153,9 @@ const getPersonalityOffers = async (req, res) => {
     res.status(200).json({
       success: true,
       count: offers.length,
+      total: offers.length,
+      currentPage: 1,
+      totalPages: 1,
       data: offers,
     });
   } catch (error) {
