@@ -8,21 +8,24 @@ const {
   getItineraryById,
   confirmActivity,
   declineActivity,
+
 } = require("../controllers/itineraryController");
 
+const { verifyToken } = require("../middleware/authMiddleware");
+
 router.post("/", createItinerary);
+
+
 
 router.get("/", getAllItineraries);
 
 router.get("/:id", getItineraryById);
 
-// confirm pending activity
 router.patch(
   "/:itineraryId/activities/:activityId/confirm",
   confirmActivity
 );
 
-// decline/delete activity
 router.delete(
   "/:itineraryId/activities/:activityId",
   declineActivity

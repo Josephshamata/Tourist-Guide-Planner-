@@ -8,6 +8,9 @@ type ItineraryHeroProps = {
   location?: string;
   category?: string;
   price?: number;
+  onBook?: () => void;
+  bookingLoading?: boolean;
+  alreadyBooked?: boolean;
 };
 
 export default function ItineraryHero({
@@ -17,6 +20,9 @@ export default function ItineraryHero({
   location,
   category,
   price,
+  onBook,
+  bookingLoading,
+  alreadyBooked
 }: ItineraryHeroProps) {
   return (
     <section className="relative min-h-[290px] overflow-hidden bg-[var(--bg-light)]">
@@ -82,7 +88,7 @@ export default function ItineraryHero({
         </div>
 
         {/* Right */}
-        <PriceCard price={price || 0} />
+        <PriceCard price={price || 0} onBook={onBook} alreadyBooked={alreadyBooked} />
       </div>
     </section>
   );

@@ -66,6 +66,10 @@ const itinerarySchema = new mongoose.Schema(
       enum: ["experience", "custom"],
       required: true,
     },
+    isTemplate: {
+  type: Boolean,
+  default: false,
+},
 
     coverImage: String,
 

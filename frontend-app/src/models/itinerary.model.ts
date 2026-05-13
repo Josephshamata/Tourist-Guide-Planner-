@@ -105,12 +105,18 @@ export interface Itinerary {
   slug?: string;
 
   sourceType: "experience" | "custom";
+  isTemplate?: boolean;
 
   coverImage?: string;
   summary?: string;
 
   durationDays?: number;
   estimatedTotalPrice?: number;
+
+  tripStatus?: "upcoming" | "completed" | "cancelled";
+  startDate?: string;
+  endDate?: string;
+  bookingStatus?: "pending" | "confirmed" | "cancelled";
 
   categories?: string[];
   mainPlaces?: string[];
@@ -128,7 +134,6 @@ export interface Itinerary {
   createdAt?: string;
   updatedAt?: string;
 }
-
 export interface ItineraryApiResponse {
   success: boolean;
   itinerary: Itinerary;

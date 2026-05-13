@@ -1,7 +1,13 @@
 import { ChevronRight, History } from "lucide-react";
 import HistoryTripCard from "./HistoryTripCard";
+import type { Booking } from "../../models/booking.model";
 
-export default function TripHistorySection() {
+type TripHistorySectionProps = {
+  bookings: Booking[];
+};
+
+
+export default function TripHistorySection({ bookings }: TripHistorySectionProps) {
   return (
     <section className="rounded-[2rem] border border-[var(--border)] bg-white p-8 shadow-soft-red">
       <div className="mb-7 flex items-start justify-between gap-6">
@@ -23,24 +29,19 @@ export default function TripHistorySection() {
       </div>
 
       <div className="space-y-4">
-        <HistoryTripCard
-          title="Batroun Coastal Escape"
-          location="Batroun, Lebanon"
-          dateRange="Mar 2 – Mar 4, 2025"
-          days={3}
-          totalCost={520}
-          imageUrl="/images/batroun.png"
-        />
-
-        <HistoryTripCard
-          title="Bekaa Wine Weekend"
-          location="Bekaa, Lebanon"
-          dateRange="Jan 15 – Jan 17, 2025"
-          days={3}
-          totalCost={390}
-          imageUrl="/images/wine.png"
-        />
+       {bookings.map((booking) => (
+  <HistoryTripCard
+    key={booking.id}
+    title={booking.itineraryId.title}
+    location={booking.itineraryId.mainPlaces?.join(", ") || "Lebanon"}
+    dateRange={`${booking.startDate} - ${booking.endDate}`}
+    days={booking.itineraryId.durationDays || 0}
+    totalCost={booking.totalPrice || 0}
+    imageUrl={booking.itineraryId.coverImage || ""}
+  />
+))}
       </div>
     </section>
   );
 }
+         

@@ -104,7 +104,34 @@ const confirmActivity = async (req, res) => {
     });
   }
 };
+const getMyTrips = async (req, res) => {
+  try {
+    const userId = req.user._id;
 
+    const itineraries = await Itinerary.find({ userId }).sort({
+      startDate: 1,
+    });
+
+    const upcomingTrips = itineraries.filter(
+      (trip) => trip.tripStatus === "upcoming"
+    );
+
+    const completedTrips = itineraries.filter(
+      (trip) => trip.tripStatus === "completed"
+    );
+
+    res.status(200).json({
+      success: true,
+      upcomingTrips,
+      completedTrips,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 const declineActivity = async (req, res) => {
   try {
     const { itineraryId, activityId } = req.params;

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import ItineraryHero from "../itinerary/ItineraryHero";
 import ItineraryTabs from "../itinerary/ItineraryTabs";
 import TripDaysList from "../itinerary/TripDaysList";
 import TripOverviewCard from "../itinerary/sidebar/TripOverviewCard";
+
 import { apiRequest } from "../../services/api";
 import type { Itinerary } from "../../models/itinerary.model";
 
@@ -16,23 +17,24 @@ type OfferWithItineraryResponse = {
     _id: string;
     title: string;
     slug: string;
-    type: string;
-    imageUrl: string;
-    totalPrice: number;
-    days: number;
-    mainPlaces: string[];
-    hotelName: string;
-    categories: string[];
     itineraryId: Itinerary;
   };
 };
 
+type BookingCheckResponse = {
+  success: boolean;
+  alreadyBooked: boolean;
+};
+
 export default function ItineraryPage() {
   const { slug } = useParams();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<ActiveTab>("itinerary");
   const [itinerary, setItinerary] = useState<Itinerary | null>(null);
   const [loading, setLoading] = useState(true);
+  const [bookingLoading, setBookingLoading] = useState(false);
+  const [alreadyBooked, setAlreadyBooked] = useState(false);
 
   useEffect(() => {
     const fetchItinerary = async () => {
@@ -43,7 +45,16 @@ export default function ItineraryPage() {
           `/offers/${slug}`
         );
 
-        setItinerary(data.offer.itineraryId);
+        const fetchedItinerary = data.offer.itineraryId;
+        setItinerary(fetchedItinerary);
+
+        if (fetchedItinerary?._id) {
+          const bookingCheck = await apiRequest<BookingCheckResponse>(
+            `/bookings/check/${fetchedItinerary._id}`
+          );
+
+          setAlreadyBooked(bookingCheck.alreadyBooked);
+        }
       } catch (error) {
         console.error("Failed to fetch itinerary:", error);
       } finally {
@@ -53,6 +64,32 @@ export default function ItineraryPage() {
 
     fetchItinerary();
   }, [slug]);
+
+  const handleBookExperience = async () => {
+    if (!itinerary?._id || alreadyBooked) return;
+
+    try {
+      setBookingLoading(true);
+
+      await apiRequest("/bookings", {
+        method: "POST",
+        body: JSON.stringify({
+          itineraryId: itinerary._id,
+          startDate: itinerary.startDate,
+          endDate: itinerary.endDate,
+          guests: 2,
+        }),
+      });
+
+      setAlreadyBooked(true);
+      navigate("/my-trip");
+    } catch (error) {
+      console.error("Failed to book experience:", error);
+      alert(error instanceof Error ? error.message : "Failed to book experience");
+    } finally {
+      setBookingLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -83,6 +120,9 @@ export default function ItineraryPage() {
         location={itinerary.mainPlaces?.[0] || "Lebanon"}
         category={itinerary.categories?.[0] || "Experience"}
         price={itinerary.estimatedTotalPrice || 0}
+        onBook={handleBookExperience}
+        bookingLoading={bookingLoading}
+        alreadyBooked={alreadyBooked}
       />
 
       <ItineraryTabs activeTab={activeTab} onChange={setActiveTab} />
@@ -108,6 +148,13 @@ export default function ItineraryPage() {
                 {itinerary.services?.driverIncluded && <li>✔ Private Driver</li>}
                 {itinerary.services?.tourGuideIncluded && <li>✔ Tour Guide</li>}
                 {itinerary.services?.vipAccess && <li>✔ VIP Access</li>}
+
+                {!itinerary.services?.airportPickup &&
+                  !itinerary.services?.driverIncluded &&
+                  !itinerary.services?.tourGuideIncluded &&
+                  !itinerary.services?.vipAccess && (
+                    <li>No included services listed.</li>
+                  )}
               </ul>
             </div>
           )}
@@ -118,17 +165,39 @@ export default function ItineraryPage() {
                 Hotel Stay
               </h2>
 
-              <h3 className="mt-6 text-2xl font-bold text-[var(--text-dark)]">
-                {itinerary.hotel?.name}
-              </h3>
+              <div className="mt-8 grid gap-8 md:grid-cols-[320px_1fr]">
+                {itinerary.hotel?.imageUrl && (
+                  <img
+                    src={itinerary.hotel.imageUrl}
+                    alt={itinerary.hotel?.name || "Hotel"}
+                    className="h-72 w-full rounded-3xl object-cover"
+                  />
+                )}
 
-              <p className="mt-2 text-[var(--text-dark)]/60">
-                {itinerary.hotel?.location}
-              </p>
+                <div>
+                  <h3 className="text-2xl font-bold text-[var(--text-dark)]">
+                    {itinerary.hotel?.name || "Hotel included"}
+                  </h3>
 
-              <p className="mt-2 font-semibold text-[var(--primary)]">
-                {itinerary.hotel?.stars} Stars
-              </p>
+                  <p className="mt-3 leading-8 text-[var(--text-dark)]/60">
+                    {itinerary.hotel?.location || "Lebanon"}
+                  </p>
+
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    {itinerary.hotel?.stars && (
+                      <span className="rounded-full bg-[var(--accent-soft)] px-4 py-2 text-sm font-semibold text-[var(--primary)]">
+                        {itinerary.hotel.stars} Stars
+                      </span>
+                    )}
+
+                    {itinerary.hotel?.location && (
+                      <span className="rounded-full bg-[var(--accent-soft)] px-4 py-2 text-sm font-semibold text-[var(--primary)]">
+                        {itinerary.hotel.location}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
@@ -138,10 +207,12 @@ export default function ItineraryPage() {
                 Important Information
               </h2>
 
-              <p className="mt-6 text-[var(--text-dark)]/70">
-                Booking confirmations and final reservation details will be
-                shared with the traveler before the trip.
-              </p>
+              <div className="mt-8 space-y-6 text-[var(--text-dark)]/70">
+                <p>• Final booking confirmation will be sent to the traveler.</p>
+                <p>• Some reservations may remain pending until the place confirms.</p>
+                <p>• Estimated costs may vary slightly depending on availability.</p>
+                <p>• Partner contacts are shown inside each day’s activity details.</p>
+              </div>
             </div>
           )}
         </section>
@@ -153,7 +224,7 @@ export default function ItineraryPage() {
             mainPlaces={itinerary.mainPlaces || []}
             hotelName={itinerary.hotel?.name || "Hotel included"}
             hotelStars={itinerary.hotel?.stars || 0}
-            groupSize={itinerary.preferences?.requestedServices ? 2 : 2}
+            groupSize={2}
             categories={itinerary.categories || []}
             hotelCost={itinerary.costBreakdown?.hotelCost || 0}
             foodCost={itinerary.costBreakdown?.foodCost || 0}
