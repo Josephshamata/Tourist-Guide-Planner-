@@ -1,14 +1,21 @@
-export function PdfTripHero() {
+import type { Itinerary } from "../../../models/itinerary.model";
+import "./pdf.css";
+type Props = {
+  itinerary: Itinerary;
+};
+
+export function PdfTripHero({ itinerary }: Props) {
   return (
     <section className="pdf-hero">
       <div>
-        <h1 className="pdf-main-title">Beirut Summer Escape</h1>
+        <h1 className="pdf-main-title">{itinerary.title}</h1>
 
-        <p className="pdf-subtitle">4 Days / 3 Nights in Lebanon</p>
+        <p className="pdf-subtitle">
+          {itinerary.durationDays || 1} Days in Lebanon
+        </p>
 
         <p className="pdf-description">
-          A curated summer experience filled with beach clubs, vibrant nights,
-          cultural discoveries and unforgettable moments.
+          {itinerary.summary || "A curated Lebanon travel experience."}
         </p>
       </div>
 
@@ -17,23 +24,35 @@ export function PdfTripHero() {
           <span className="material-symbols-outlined pdf-stat-icon">
             calendar_month
           </span>
-          <p className="pdf-stat-value">July 15 – July 18, 2024</p>
-          <p className="pdf-stat-label">Travel Dates</p>
+
+          <p className="pdf-stat-value">
+            {itinerary.durationDays || 1} Days
+          </p>
+
+          <p className="pdf-stat-label">Duration</p>
         </div>
 
         <div className="pdf-stat">
           <span className="material-symbols-outlined pdf-stat-icon">
-            groups
+            location_on
           </span>
-          <p className="pdf-stat-value">4 Travelers</p>
-          <p className="pdf-stat-label">Group Size</p>
+
+          <p className="pdf-stat-value">
+            {itinerary.mainPlaces?.slice(0, 2).join(" • ") || "Lebanon"}
+          </p>
+
+          <p className="pdf-stat-label">Regions</p>
         </div>
 
         <div className="pdf-stat">
           <span className="material-symbols-outlined pdf-stat-icon">
             account_balance_wallet
           </span>
-          <p className="pdf-stat-value">$2,400 – $2,800</p>
+
+          <p className="pdf-stat-value">
+            ${itinerary.estimatedTotalPrice || itinerary.costBreakdown?.totalCost || 0}
+          </p>
+
           <p className="pdf-stat-label">Estimated Budget</p>
         </div>
       </div>

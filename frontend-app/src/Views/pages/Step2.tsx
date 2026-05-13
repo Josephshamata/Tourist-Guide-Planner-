@@ -4,6 +4,7 @@ import Navbar from "../components/steps/Navbar";
 import StepHeader from "../components/steps/StepHeader";
 import StepNavigation from "../components/steps/StepNavigation";
 import FunFact from "../components/steps/FunFact";
+import { saveTripPreferences } from "../../tripPreferences";
 
 type Experience = {
   id: string;
@@ -153,16 +154,16 @@ export default function Step2() {
   };
 
   const handleNext = () => {
-    console.log("Selected experiences:", selected);
+    saveTripPreferences({
+      experiences: selected,
+    });
+
     navigate("/step3");
   };
 
   return (
     <div className="min-h-screen bg-background-light font-sans text-black">
-      <Navbar
-        onSave={() => console.log("Save progress")}
-        onClose={() => console.log("Close")}
-      />
+      <Navbar />
 
       <div className="mx-auto w-full max-w-5xl">
         <div className="overflow-hidden">
@@ -202,12 +203,11 @@ export default function Step2() {
               </section>
             </form>
           </div>
-
           <StepNavigation
             backTo="/step1"
-            nextTo="/step3"
             nextLabel="Select Nightlife Vibe"
             skipTo="/step3"
+            onNext={handleNext}
           />
 
           <div className="h-10" />

@@ -1,43 +1,41 @@
-import { useRef } from "react";
-import html2pdf from "html2pdf.js";
-
-import "./pdf.css";
-
-import { PdfHeader } from "./PdfHeader";
-import { PdfTripHero } from "./PdfTripHero";
-import { PdfTripSummary } from "./PdfTripSummary";
-import { PdfIncludedServices } from "./PdfIncludedServices";
-import { PdfDayByDay } from "./PdfDayByDay";
+import type { Itinerary } from "../../../models/itinerary.model";
 import { PdfAccommodation } from "./PdfAccommodation";
 import { PdfCostBreakdown } from "./PdfCostBreakdown";
+import { PdfDayByDay } from "./PdfDayByDay";
 import { PdfFooter } from "./PdfFooter";
+import { PdfHeader } from "./PdfHeader";
+import { PdfIncludedServices } from "./PdfIncludedServices";
+import { PdfTripHero } from "./PdfTripHero";
+import { PdfTripSummary } from "./PdfTripSummary";
+import "./pdf.css";
 
-export function ItineraryPdfPreview() {
+type Props = {
+  itinerary: Itinerary;
+};
+
+export function ItineraryPdfPreview({ itinerary }: Props) {
   return (
     <div className="pdf-screen">
-      <div className="pdf-section">
-        <PdfHeader />
-      </div>
+      <div className="pdf-page">
+        <PdfHeader itinerary={itinerary} />
+        <PdfTripHero itinerary={itinerary} />
 
-      <div className="pdf-section">
-        <PdfTripHero />
-      </div>
-
-      <div className="pdf-grid-top">
-        <PdfTripSummary />
-        <PdfIncludedServices />
-      </div>
-
-      <div className="pdf-grid-main">
-        <PdfDayByDay />
-
-        <div className="pdf-sidebar">
-          <PdfAccommodation />
-          <PdfCostBreakdown />
+        <div className="pdf-grid-top">
+          <PdfTripSummary itinerary={itinerary} />
+          <PdfIncludedServices itinerary={itinerary} />
         </div>
-      </div>
 
-      <PdfFooter />
+        <div className="pdf-grid-main">
+          <PdfDayByDay itinerary={itinerary} />
+
+          <div className="pdf-sidebar">
+            <PdfAccommodation itinerary={itinerary} />
+            <PdfCostBreakdown itinerary={itinerary} />
+          </div>
+        </div>
+
+        <PdfFooter />
+      </div>
     </div>
   );
 }

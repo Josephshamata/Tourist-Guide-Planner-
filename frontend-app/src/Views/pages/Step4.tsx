@@ -4,6 +4,7 @@ import Navbar from "../components/steps/Navbar";
 import StepHeader from "../components/steps/StepHeader";
 import StepNavigation from "../components/steps/StepNavigation";
 import FunFact from "../components/steps/FunFact";
+import { saveTripPreferences } from "../../tripPreferences";
 
 type FoodCard = {
   id: string;
@@ -163,16 +164,18 @@ export default function Step4() {
   };
 
   const handleNext = () => {
-    console.log({ selectedFood, atmosphere, exploration });
-    navigate("/step5"); // when step5 exists
+    saveTripPreferences({
+      foodPreferences: selectedFood,
+      diningAtmosphere: atmosphere,
+      foodExplorationLevel: exploration,
+    });
+
+    navigate("/step5");
   };
 
   return (
     <div className="min-h-screen bg-background-light font-sans text-black">
-      <Navbar
-        onSave={() => console.log("Save progress")}
-        onClose={() => console.log("Close")}
-      />
+      <Navbar />
 
       <div className="mx-auto w-full max-w-5xl">
         <div className="overflow-hidden">
@@ -248,12 +251,11 @@ export default function Step4() {
               <FunFact description="The Lebanese Mediterranean diet is considered one of the healthiest in the world. It's naturally rich in extra-virgin olive oil, fresh mountain-grown vegetables, and lean proteins. You can indulge your palate while nourishing your body!" />
             </form>
           </div>
-
           <StepNavigation
             backTo="/step3"
-            nextTo="/step5"
             nextLabel="Select Place of Comfort And Stay"
             skipTo="/step5"
+            onNext={handleNext}
           />
 
           <div className="h-10" />

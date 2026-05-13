@@ -1,12 +1,38 @@
-const costs = [
-  { icon: "bed", label: "Accommodation", value: "$1,200" },
-  { icon: "restaurant", label: "Food & Dining", value: "$600" },
-  { icon: "directions_car", label: "Transportation", value: "$400" },
-  { icon: "confirmation_number", label: "Activities & Tickets", value: "$300" },
-  { icon: "paid", label: "Miscellaneous", value: "$100" },
-];
+import type { Itinerary } from "../../../models/itinerary.model";
+import "./pdf.css";
+type Props = {
+  itinerary: Itinerary;
+};
 
-export function PdfCostBreakdown() {
+export function PdfCostBreakdown({ itinerary }: Props) {
+  const costs = [
+    {
+      icon: "bed",
+      label: "Accommodation",
+      value: itinerary.costBreakdown?.hotelCost || 0,
+    },
+    {
+      icon: "restaurant",
+      label: "Food & Dining",
+      value: itinerary.costBreakdown?.foodCost || 0,
+    },
+    {
+      icon: "directions_car",
+      label: "Transportation",
+      value: itinerary.costBreakdown?.transportCost || 0,
+    },
+    {
+      icon: "confirmation_number",
+      label: "Activities",
+      value: itinerary.costBreakdown?.activitiesCost || 0,
+    },
+  ];
+
+  const total =
+    itinerary.costBreakdown?.totalCost ||
+    itinerary.estimatedTotalPrice ||
+    0;
+
   return (
     <section className="pdf-card">
       <h2 className="pdf-title-small">Cost Breakdown</h2>
@@ -18,10 +44,11 @@ export function PdfCostBreakdown() {
               <span className="material-symbols-outlined pdf-cost-icon">
                 {cost.icon}
               </span>
+
               <span className="pdf-cost-label">{cost.label}</span>
             </div>
 
-            <span className="pdf-cost-value">{cost.value}</span>
+            <span className="pdf-cost-value">${cost.value}</span>
           </div>
         ))}
       </div>
@@ -29,8 +56,8 @@ export function PdfCostBreakdown() {
       <div className="pdf-cost-divider" />
 
       <div className="pdf-cost-total">
-        <span className="pdf-cost-total-label">Total (Per Person)</span>
-        <span className="pdf-cost-total-value">$2,600</span>
+        <span className="pdf-cost-total-label">Total</span>
+        <span className="pdf-cost-total-value">${total}</span>
       </div>
     </section>
   );

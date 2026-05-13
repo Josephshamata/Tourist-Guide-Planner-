@@ -4,6 +4,7 @@ import Navbar from "../components/steps/Navbar";
 import StepHeader from "../components/steps/StepHeader";
 import StepNavigation from "../components/steps/StepNavigation";
 import FunFact from "../components/steps/FunFact";
+import { saveTripPreferences } from "../../tripPreferences";
 
 type MusicOption = {
   id: string;
@@ -119,18 +120,17 @@ export default function Step3() {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
-
   const handleNext = () => {
-    console.log("Selected music:", selected);
-    navigate("/step4"); // create Step4 later
+    saveTripPreferences({
+      nightlifeVibes: selected,
+    });
+
+    navigate("/step4");
   };
 
   return (
     <div className="min-h-screen bg-background-light font-sans text-black">
-      <Navbar
-        onSave={() => console.log("Save progress")}
-        onClose={() => console.log("Close")}
-      />
+      <Navbar />
 
       <div className="mx-auto w-full max-w-5xl">
         <div className="overflow-hidden">
@@ -173,9 +173,9 @@ export default function Step3() {
 
           <StepNavigation
             backTo="/step2"
-            nextTo="/step4"
             nextLabel="Choose Food Preferences"
             skipTo="/step4"
+            onNext={handleNext}
           />
 
           <div className="h-10" />

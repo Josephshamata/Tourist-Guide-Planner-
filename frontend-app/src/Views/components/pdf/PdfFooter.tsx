@@ -1,3 +1,5 @@
+import "./pdf.css";
+
 export function PdfFooter() {
   return (
     <footer className="pdf-footer">

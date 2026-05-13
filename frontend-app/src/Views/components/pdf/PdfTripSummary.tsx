@@ -1,12 +1,30 @@
-export function PdfTripSummary() {
+import type { Itinerary } from "../../../models/itinerary.model";
+import "./pdf.css";
+type Props = {
+  itinerary: Itinerary;
+};
+
+export function PdfTripSummary({ itinerary }: Props) {
   const summaryItems = [
-    { icon: "schedule", label: "Duration", value: "4 Days / 3 Nights" },
-    { icon: "explore", label: "Travel Style", value: "Luxury • Coastal Nightlife" },
-    { icon: "location_on", label: "Regions", value: "Beirut • Batroun • Jounieh" },
+    {
+      icon: "schedule",
+      label: "Duration",
+      value: `${itinerary.durationDays || 1} Days`,
+    },
+    {
+      icon: "explore",
+      label: "Travel Style",
+      value: itinerary.categories?.join(" • ") || "Curated Experience",
+    },
+    {
+      icon: "location_on",
+      label: "Regions",
+      value: itinerary.mainPlaces?.join(" • ") || "Lebanon",
+    },
     {
       icon: "attach_money",
       label: "Total Estimated Cost",
-      value: "$2,400 – $2,800",
+      value: `$${itinerary.estimatedTotalPrice || itinerary.costBreakdown?.totalCost || 0}`,
       sub: "Per Person",
     },
   ];

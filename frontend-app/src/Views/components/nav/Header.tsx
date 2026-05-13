@@ -2,18 +2,13 @@ import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "../common/Button";
 import { logoutUser } from "../../../services/auth.service";
-
+import { useAuthUser } from "../../../controllers/auth.controller";
 
 export function Header() {
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(false);
 
-  // Later replace with real authenticated user
-  const user = {
-    name: "Mohammad Sabra",
-    avatar:
-      "https://ui-avatars.com/api/?name=Mohammad+Sabra&background=7A0C14&color=ffffff",
-  };
+  const { user } = useAuthUser();
 
   // Later replace with backend/db logic
   const hasActiveTrip = false;
@@ -72,16 +67,10 @@ export function Header() {
 
           {/* My Trip */}
           <NavLink
-            to={
-              hasActiveTrip
-                ? `/itinerary/${activeTripId}`
-                : "/my-trip"
-            }
+            to={hasActiveTrip ? `/itinerary/${activeTripId}` : "/my-trip"}
             className={({ isActive }) =>
               `text-sm font-semibold transition-colors ${
-                isActive
-                  ? "text-primary"
-                  : "text-slate-700 hover:text-primary"
+                isActive ? "text-primary" : "text-slate-700 hover:text-primary"
               }`
             }
           >
@@ -92,9 +81,7 @@ export function Header() {
         {/* Right Side */}
         <div className="flex items-center gap-4 ">
           {/* Plan Trip CTA */}
-          <Button onClick={() => navigate("/Step1")}>
-            Plan My Trip
-          </Button>
+          <Button onClick={() => navigate("/Step1")}>Plan My Trip</Button>
 
           {/* Profile */}
           {user ? (
@@ -104,7 +91,9 @@ export function Header() {
                 className="flex items-center gap-2 rounded-full border border-primary/20 bg-white px-2 py-1 shadow-sm transition hover:shadow-md"
               >
                 <img
-                  src={user.avatar}
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    user.name,
+                  )}&background=7A0C14&color=ffffff`}
                   alt={user.name}
                   className="h-10 w-10 rounded-full object-cover"
                 />
@@ -122,9 +111,7 @@ export function Header() {
                       {user.name}
                     </p>
 
-                    <p className="text-xs text-slate-500">
-                      Traveler account
-                    </p>
+                    <p className="text-xs text-slate-500">Traveler account</p>
                   </div>
 
                   {/* My Trip Mobile Shortcut */}
@@ -133,7 +120,7 @@ export function Header() {
                       navigate(
                         hasActiveTrip
                           ? `/itinerary/${activeTripId}`
-                          : "/my-trip"
+                          : "/my-trip",
                       )
                     }
                     className="mt-2 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-semibold text-slate-700 transition hover:bg-primary/10 hover:text-primary md:hidden"
@@ -152,7 +139,6 @@ export function Header() {
                     <span className="material-symbols-outlined text-lg">
                       logout
                     </span>
-
                     Logout
                   </button>
                 </div>

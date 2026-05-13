@@ -7,6 +7,7 @@ import StepNavigation from "../components/steps/StepNavigation";
 import FunFact from "../components/steps/FunFact";
 import { AppSelect } from "../components/common/AppSelect";
 import type { SelectOption } from "../components/common/AppSelect";
+import { saveTripPreferences } from "../../tripPreferences";
 
 type TravelParty = "solo" | "friends" | "family" | "romantic";
 type AgeRange = "18-25" | "26-35" | "36-45" | "46-55" | "55+";
@@ -17,21 +18,21 @@ export default function Step1() {
   const [travelParty, setTravelParty] = useState<TravelParty | null>("solo");
   const [ageRange, setAgeRange] = useState<AgeRange | null>("26-35");
   const monthOptions: SelectOption[] = Array.from({ length: 12 }, (_, i) => {
-  const date = new Date();
-  date.setMonth(date.getMonth() + i);
+    const date = new Date();
+    date.setMonth(date.getMonth() + i);
 
-  const label = date.toLocaleString("en-US", {
-    month: "long",
-    year: "numeric",
+    const label = date.toLocaleString("en-US", {
+      month: "long",
+      year: "numeric",
+    });
+
+    return {
+      value: label,
+      label,
+    };
   });
 
-  return {
-    value: label,
-    label,
-  };
-});
-
-const [month, setMonth] = useState<string>(monthOptions[0].value);
+  const [month, setMonth] = useState<string>(monthOptions[0].value);
   const [days, setDays] = useState<number>(14);
 
   const travelCards = useMemo(
@@ -71,16 +72,19 @@ const [month, setMonth] = useState<string>(monthOptions[0].value);
   const ageButtons: AgeRange[] = ["18-25", "26-35", "36-45", "46-55", "55+"];
 
   const handleNext = () => {
-    console.log({ travelParty, ageRange, month, days });
+    saveTripPreferences({
+      travelParty: travelParty || undefined,
+      ageRange: ageRange || undefined,
+      month,
+      tripDays: days,
+    });
+
     navigate("/step2");
   };
 
   return (
     <div className="min-h-screen bg-background-light font-sans text-black">
-      <Navbar
-        onSave={() => console.log("Save progress")}
-        onClose={() => console.log("Close")}
-      />
+      <Navbar />
 
       <div className="mx-auto w-full max-w-5xl">
         <div className="overflow-hidden">
@@ -225,13 +229,11 @@ const [month, setMonth] = useState<string>(monthOptions[0].value);
               />
             </form>
           </div>
-
           <StepNavigation
-            nextTo="/step2"
             nextLabel="Choose Experiences"
             skipTo="/step2"
+            onNext={handleNext}
           />
-
           <div className="h-10" />
         </div>
       </div>

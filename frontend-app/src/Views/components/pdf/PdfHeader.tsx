@@ -1,4 +1,16 @@
-export function PdfHeader() {
+import type { Itinerary } from "../../../models/itinerary.model";
+import "./pdf.css";
+type Props = {
+  itinerary: Itinerary;
+};
+
+export function PdfHeader({ itinerary }: Props) {
+  const generatedDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <header>
       <div className="pdf-header-row">
@@ -15,7 +27,8 @@ export function PdfHeader() {
 
         <div style={{ textAlign: "right" }}>
           <h2 className="pdf-doc-title">ITINERARY</h2>
-          <p className="pdf-date">Generated on May 15, 2024</p>
+          <p className="pdf-date">Generated on {generatedDate}</p>
+          {/* <p className="pdf-date">{itinerary.bookingStatus || "Trip Plan"}</p> */}
         </div>
       </div>
 

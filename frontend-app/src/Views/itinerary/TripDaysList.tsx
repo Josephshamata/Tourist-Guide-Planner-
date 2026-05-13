@@ -1,16 +1,19 @@
 import { CalendarDays, ChevronRight, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import type { ItineraryDay } from "../../models/itinerary.model";
+import type { Itinerary, ItineraryDay } from "../../models/itinerary.model";
 import html2pdf from "html2pdf.js";
 import { useRef } from "react";
 import { ItineraryPdfPreview } from "../components/pdf/ItineraryPdfPreview";
 type TripDaysListProps = {
   itinerarySlug: string;
+    itinerary:Itinerary;
   days: ItineraryDay[];
 };
 
 export default function TripDaysList({
   itinerarySlug,
+  itinerary,
+
   days,
 }: TripDaysListProps) {
   const navigate = useNavigate();
@@ -37,7 +40,7 @@ export default function TripDaysList({
     <>
       <div style={{ position: "absolute", left: "-99999px", top: 0 }}>
         <div ref={pdfRef}>
-          <ItineraryPdfPreview />
+          <ItineraryPdfPreview itinerary={itinerary}/>
         </div>
       </div>
       <section className="w-full rounded-[2rem] bg-white p-8 shadow-soft-red">

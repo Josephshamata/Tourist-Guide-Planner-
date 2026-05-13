@@ -4,6 +4,7 @@ import Navbar from "../components/steps/Navbar";
 import StepHeader from "../components/steps/StepHeader";
 import StepNavigation from "../components/steps/StepNavigation";
 import FunFact from "../components/steps/FunFact";
+import { saveTripPreferences } from "../../tripPreferences";
 
 type Comfort = "budget" | "balanced" | "premium" | "vip";
 type Stay = "boutique" | "beach" | "mountain" | "guesthouse";
@@ -32,29 +33,29 @@ function ComfortCard({
       ].join(" ")}
     >
       <div
-  className="h-full w-full bg-cover bg-center"
-  style={{ backgroundImage: `url(${imageUrl})` }}
->
-  <div className="h-full w-full bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 flex flex-col justify-between">
-    
-    {/* TOP RIGHT CHECK */}
-    <div className="flex justify-end">
-      {selected ? (
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-lg">
-          <span className="material-symbols-outlined text-base">check</span>
+        className="h-full w-full bg-cover bg-center"
+        style={{ backgroundImage: `url(${imageUrl})` }}
+      >
+        <div className="h-full w-full bg-gradient-to-t from-black/90 via-black/30 to-transparent p-4 flex flex-col justify-between">
+          {/* TOP RIGHT CHECK */}
+          <div className="flex justify-end">
+            {selected ? (
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-lg">
+                <span className="material-symbols-outlined text-base">
+                  check
+                </span>
+              </div>
+            ) : (
+              <div className="h-9 w-9" />
+            )}
+          </div>
+
+          {/* TITLE */}
+          <div className="text-white">
+            <p className="text-lg font-bold">{title}</p>
+          </div>
         </div>
-      ) : (
-        <div className="h-9 w-9" />
-      )}
-    </div>
-
-    {/* TITLE */}
-    <div className="text-white">
-      <p className="text-lg font-bold">{title}</p>
-    </div>
-
-  </div>
-</div>
+      </div>
     </button>
   );
 }
@@ -111,16 +112,16 @@ export default function Step5() {
   const [comfort, setComfort] = useState<Comfort>("balanced");
   const [stay, setStay] = useState<Stay | null>(null);
   const handleNext = () => {
-    console.log({ comfort, stay });
+    saveTripPreferences({
+      comfortLevel: comfort,
+      stayType: stay || undefined,
+    });
     navigate("/step6");
   };
 
   return (
     <div className="min-h-screen bg-background-light font-sans text-black">
-      <Navbar
-        onSave={() => console.log("Save progress")}
-        onClose={() => console.log("Close")}
-      />
+      <Navbar />
 
       <div className="mx-auto w-full max-w-5xl">
         <StepHeader
@@ -175,7 +176,9 @@ export default function Step5() {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <StayCard
                   active={stay === "boutique"}
-                  onClick={() => setStay(stay === "boutique" ? null : "boutique")}
+                  onClick={() =>
+                    setStay(stay === "boutique" ? null : "boutique")
+                  }
                   icon="apartment"
                   label="Boutique Hotel"
                 />
@@ -187,13 +190,17 @@ export default function Step5() {
                 />
                 <StayCard
                   active={stay === "mountain"}
-                  onClick={() => setStay(stay === "mountain" ? null : "mountain")}
+                  onClick={() =>
+                    setStay(stay === "mountain" ? null : "mountain")
+                  }
                   icon="landscape"
                   label="Mountain Lodge"
                 />
                 <StayCard
                   active={stay === "guesthouse"}
-                  onClick={() => setStay(stay === "guesthouse" ? null : "guesthouse")}
+                  onClick={() =>
+                    setStay(stay === "guesthouse" ? null : "guesthouse")
+                  }
                   icon="home"
                   label="Airbnb"
                 />
@@ -210,9 +217,9 @@ export default function Step5() {
 
         <StepNavigation
           backTo="/step4"
-          nextTo="/step6"
           nextLabel="Final Step"
           skipTo="/step6"
+          onNext={handleNext}
         />
 
         <div className="h-10" />

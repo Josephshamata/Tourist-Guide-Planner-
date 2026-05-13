@@ -1,66 +1,23 @@
-const days = [
-  {
-    dayNumber: 1,
-    title: "Beirut Mediterranean Spirit",
-    imageUrl:
-      "https://images.unsplash.com/photo-1590077428593-a55bb07c4665?q=80&w=800&auto=format&fit=crop",
-    estimatedCost: 600,
-    activities: [
-      { time: "Morning", title: "Iris Beach Club Experience" },
-      { time: "Lunch", title: "Seaside Lunch at Sal" },
-      { time: "Afternoon", title: "Gemmayze Cultural Walk" },
-      { time: "Evening", title: "Dinner at Em Sherif & Rooftop Drinks" },
-    ],
-  },
-  {
-    dayNumber: 2,
-    title: "Jounieh & Byblos Discovery",
-    imageUrl:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&auto=format&fit=crop",
-    estimatedCost: 650,
-    activities: [
-      { time: "Morning", title: "Jeita Grotto & Cable Car" },
-      { time: "Lunch", title: "Seafood Lunch in Byblos" },
-      { time: "Afternoon", title: "Byblos Old Souk & Castle" },
-      { time: "Evening", title: "Sunset at the Byblos Port" },
-    ],
-  },
-  {
-    dayNumber: 3,
-    title: "Batroun Coastal Charm",
-    imageUrl:
-      "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=800&auto=format&fit=crop",
-    estimatedCost: 550,
-    activities: [
-      { time: "Morning", title: "Explore Batroun Old Town" },
-      { time: "Lunch", title: "Lunch at a Local Sea-view Spot" },
-      { time: "Afternoon", title: "Relax at a Private Beach" },
-      { time: "Evening", title: "Dinner & Drinks in Batroun" },
-    ],
-  },
-  {
-    dayNumber: 4,
-    title: "Beirut’s Best Moments",
-    imageUrl:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&auto=format&fit=crop",
-    estimatedCost: 600,
-    activities: [
-      { time: "Morning", title: "Brunch at a Trendy Café" },
-      { time: "Lunch", title: "Free Time / Shopping" },
-      { time: "Afternoon", title: "Pigeon Rocks & Corniche Walk" },
-      { time: "Evening", title: "Farewell Dinner in Beirut" },
-    ],
-  },
-];
-
-const activityIcons: Record<string, string> = {
-  Morning: "wb_sunny",
-  Lunch: "restaurant",
-  Afternoon: "light_mode",
-  Evening: "nightlife",
+import type { Itinerary } from "../../../models/itinerary.model";
+import "./pdf.css";
+type Props = {
+  itinerary: Itinerary;
 };
 
-export function PdfDayByDay() {
+const activityIcons: Record<string, string> = {
+  food: "restaurant",
+  hotel: "bed",
+  beach: "beach_access",
+  nightlife: "nightlife",
+  nature: "forest",
+  adventure: "hiking",
+  culture: "museum",
+  shopping: "shopping_bag",
+  transport: "directions_car",
+  relaxation: "spa",
+};
+
+export function PdfDayByDay({ itinerary }: Props) {
   return (
     <section>
       <h2 className="pdf-section-heading">Day-by-Day Itinerary</h2>
@@ -69,8 +26,8 @@ export function PdfDayByDay() {
       <div className="pdf-timeline">
         <div className="pdf-timeline-line" />
 
-        {days.map((day) => (
-          <div key={day.dayNumber} className="pdf-day-row">
+        {itinerary.days.map((day) => (
+          <div key={day._id || day.dayNumber} className="pdf-day-row">
             <div className="pdf-day-badge">
               <span className="pdf-day-badge-small">Day</span>
               <span className="pdf-day-badge-number">
@@ -78,25 +35,36 @@ export function PdfDayByDay() {
               </span>
             </div>
 
-            <img src={day.imageUrl} alt={day.title} className="pdf-day-image" />
+            <img
+              src={
+                day.activities?.[0]?.imageUrl ||
+                itinerary.coverImage ||
+                "/images/sunset.png"
+              }
+              alt={day.title}
+              className="pdf-day-image"
+            />
 
             <div>
               <h3 className="pdf-day-title">{day.title}</h3>
 
               <div className="pdf-activity-list">
-                {day.activities.map((activity) => (
+                {day.activities.slice(0, 4).map((activity) => (
                   <div
-                    key={`${day.dayNumber}-${activity.time}`}
+                    key={activity._id || `${day.dayNumber}-${activity.title}`}
                     className="pdf-activity-row"
                   >
                     <div className="pdf-activity-time">
                       <span className="material-symbols-outlined pdf-activity-icon">
-                        {activityIcons[activity.time] || "circle"}
+                        {activityIcons[activity.activityType || ""] || "schedule"}
                       </span>
-                      {activity.time}
+
+                      {activity.time || "Time"}
                     </div>
 
-                    <div className="pdf-activity-title">{activity.title}</div>
+                    <div className="pdf-activity-title">
+                      {activity.title}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -104,7 +72,9 @@ export function PdfDayByDay() {
 
             <div className="pdf-day-cost">
               <p className="pdf-day-cost-label">Est. Cost</p>
-              <p className="pdf-day-cost-value">${day.estimatedCost}</p>
+              <p className="pdf-day-cost-value">
+                ${day.estimatedDayPrice || 0}
+              </p>
             </div>
           </div>
         ))}
@@ -112,8 +82,8 @@ export function PdfDayByDay() {
 
       <div className="pdf-note">
         <span className="material-symbols-outlined pdf-note-icon">info</span>
-        This itinerary is fully customizable. Activities, times and options can
-        be adjusted to fit your preferences.
+        This itinerary is customizable. Activities, times and options can be
+        adjusted based on availability and traveler preferences.
       </div>
     </section>
   );

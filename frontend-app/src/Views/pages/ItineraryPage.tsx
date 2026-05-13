@@ -92,6 +92,7 @@ export default function ItineraryPage() {
           {activeTab === "itinerary" && (
             <TripDaysList
               itinerarySlug={slug || ""}
+                itinerary={itinerary}
               days={itinerary.days || []}
             />
           )}

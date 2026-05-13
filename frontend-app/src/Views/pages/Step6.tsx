@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Navbar from "../components/steps/Navbar";
 import StepHeader from "../components/steps/StepHeader";
+import { getTripPreferences, saveTripPreferences } from "../../tripPreferences";
 
 type Service = "driver" | "hotel" | "guide" | "airport" | "vip";
 
@@ -22,7 +25,7 @@ function ServiceCard({
       className={[
         "cursor-pointer flex flex-col items-center gap-4 rounded-3xl p-6 transition-all shadow-sm",
         active
-          ? "border-2 border-primary bg-primary text-white shadow-xl scale-105"
+          ? "scale-105 border-2 border-primary bg-primary text-white shadow-xl"
           : "border-2 border-primary/10 bg-white hover:border-primary/40",
       ].join(" ")}
     >
@@ -41,13 +44,9 @@ function ServiceCard({
 }
 
 export default function Step6() {
-  const [services, setServices] = useState<Service[]>(["guide"]);
+  const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-  });
+  const [services, setServices] = useState<Service[]>(["guide"]);
 
   const toggleService = (service: Service) => {
     setServices((prev) =>
@@ -58,19 +57,21 @@ export default function Step6() {
   };
 
   const handleSubmit = () => {
-    console.log({
-      services,
-      form,
-      comfort: localStorage.getItem("comfort"),
-      stay: localStorage.getItem("stay"),
+    saveTripPreferences({
+      requestedServices: services,
     });
+
+    const finalPreferences = getTripPreferences();
+
+    console.log("FINAL AI DATA:", finalPreferences);
+
+    navigate("/loading");
   };
 
   return (
     <div className="min-h-screen bg-background-light font-sans text-[#1b100d]">
       <Navbar
-        onSave={() => console.log("Save progress")}
-        onClose={() => console.log("Close")}
+
       />
 
       <div className="mx-auto w-full max-w-5xl">
@@ -82,7 +83,7 @@ export default function Step6() {
 
         <div className="px-6 py-8 sm:px-8">
           <div className="space-y-10">
-            <div className="text-center space-y-4">
+            <div className="space-y-4 text-center">
               <p className="mx-auto max-w-2xl text-lg leading-relaxed text-[#1b100d]/70">
                 Select the services you need for a seamless journey through
                 Lebanon. We&apos;ll handle the logistics while you make the
@@ -91,34 +92,34 @@ export default function Step6() {
             </div>
 
             <section className="flex justify-center">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 max-w-4x1">
-              <ServiceCard
-                active={services.includes("driver")}
-                onClick={() => toggleService("driver")}
-                icon="directions_car"
-                label="Private Driver"
-              />
+              <div className="grid max-w-4xl grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+                <ServiceCard
+                  active={services.includes("driver")}
+                  onClick={() => toggleService("driver")}
+                  icon="directions_car"
+                  label="Private Driver"
+                />
 
-              <ServiceCard
-                active={services.includes("guide")}
-                onClick={() => toggleService("guide")}
-                icon="explore"
-                label="Tour Guide"
-              />
+                <ServiceCard
+                  active={services.includes("guide")}
+                  onClick={() => toggleService("guide")}
+                  icon="explore"
+                  label="Tour Guide"
+                />
 
-              <ServiceCard
-                active={services.includes("airport")}
-                onClick={() => toggleService("airport")}
-                icon="flight_land"
-                label="Airport Pickup"
-              />
+                <ServiceCard
+                  active={services.includes("airport")}
+                  onClick={() => toggleService("airport")}
+                  icon="flight_land"
+                  label="Airport Pickup"
+                />
 
-              <ServiceCard
-                active={services.includes("vip")}
-                onClick={() => toggleService("vip")}
-                icon="verified"
-                label="VIP Access"
-              />
+                <ServiceCard
+                  active={services.includes("vip")}
+                  onClick={() => toggleService("vip")}
+                  icon="verified"
+                  label="VIP Access"
+                />
               </div>
             </section>
 
@@ -134,13 +135,16 @@ export default function Step6() {
                   <p className="text-sm font-bold uppercase tracking-widest opacity-80">
                     Your destination awaits
                   </p>
+
                   <button
                     type="button"
                     onClick={handleSubmit}
-                    className="mt-4 flex items-center justify-center gap-3 rounded-full bg-white px-8 py-4 text-lg font-bold text-primary shadow-lg transition-all hover:scale-[1.05] active:scale-[0.98] cursor-pointer"
+                    className="mt-4 flex cursor-pointer items-center justify-center gap-3 rounded-full bg-white px-8 py-4 text-lg font-bold text-primary shadow-lg transition-all hover:scale-[1.05] active:scale-[0.98]"
                   >
-                  <span>Generate My Lebanon Experience</span>
-                  <span className="material-symbols-outlined">auto_awesome</span>
+                    <span>Generate My Lebanon Experience</span>
+                    <span className="material-symbols-outlined">
+                      auto_awesome
+                    </span>
                   </button>
                 </div>
               </div>
