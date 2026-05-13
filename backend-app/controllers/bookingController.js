@@ -14,31 +14,76 @@ const createBooking = async (req, res) => {
       });
     }
 
+    const existingBooking = await Booking.findOne({
+      userId: req.user.id,
+      itineraryId,
+      tripStatus: { $ne: "cancelled" },
+    });
+
+    if (existingBooking) {
+      return res.status(409).json({
+        success: false,
+        message: "This itinerary is already in your trips",
+      });
+    }
+
     const activityStatuses = [];
 
     itinerary.days.forEach((day) => {
       day.activities.forEach((activity) => {
         activityStatuses.push({
-          activityId: activity.id,
-          reservationStatus:
-            activity.booking?.reservationStatus || "pending",
+          activityId: activity._id,
+          reservationStatus: activity.booking?.reservationStatus || "pending",
         });
       });
     });
 
     const booking = await Booking.create({
       userId: req.user.id,
-      itineraryId: itinerary.id,
+      itineraryId,
       startDate,
       endDate,
       guests: guests || 2,
       totalPrice: itinerary.estimatedTotalPrice || 0,
       activityStatuses,
+
+      // Added to My Trip but not fully booked yet
+      bookingStatus: "pending",
       tripStatus: "upcoming",
-      bookingStatus: "confirmed",
     });
 
     res.status(201).json({
+      success: true,
+      booking,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const confirmBooking = async (req, res) => {
+  try {
+    const booking = await Booking.findOne({
+      _id: req.params.bookingId,
+      userId: req.user.id,
+    });
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+
+    booking.bookingStatus = "confirmed";
+    booking.tripStatus = "upcoming";
+
+    await booking.save();
+
+    res.status(200).json({
       success: true,
       booking,
     });
@@ -54,16 +99,54 @@ const getMyBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({
       userId: req.user.id,
-    }).populate("itineraryId");
+    })
+      .populate("itineraryId")
+      .sort({ createdAt: -1 });
+
+    const pendingTrips = bookings.filter(
+      (booking) =>
+        booking.bookingStatus === "pending" &&
+        booking.tripStatus !== "cancelled"
+    );
+
+    const upcomingTrips = bookings.filter(
+      (booking) =>
+        booking.bookingStatus === "confirmed" &&
+        booking.tripStatus === "upcoming"
+    );
+
+    const completedTrips = bookings.filter(
+      (booking) => booking.tripStatus === "completed"
+    );
 
     res.status(200).json({
       success: true,
-      upcomingTrips: bookings.filter(
-        (booking) => booking.tripStatus === "upcoming"
-      ),
-      completedTrips: bookings.filter(
-        (booking) => booking.tripStatus === "completed"
-      ),
+      pendingTrips,
+      upcomingTrips,
+      completedTrips,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const checkBookingStatus = async (req, res) => {
+  try {
+    const { itineraryId } = req.params;
+
+    const existingBooking = await Booking.findOne({
+      userId: req.user.id,
+      itineraryId,
+      tripStatus: { $ne: "cancelled" },
+    });
+
+    res.status(200).json({
+      success: true,
+      alreadyBooked: !!existingBooking,
+      bookingStatus: existingBooking?.bookingStatus || null,
     });
   } catch (error) {
     res.status(500).json({
@@ -78,7 +161,7 @@ const confirmBookingActivity = async (req, res) => {
     const { bookingId, activityId } = req.params;
 
     const booking = await Booking.findOne({
-      id: bookingId,
+      _id: bookingId,
       userId: req.user.id,
     });
 
@@ -115,27 +198,7 @@ const confirmBookingActivity = async (req, res) => {
     });
   }
 };
-const checkBookingStatus = async (req, res) => {
-  try {
-    const { itineraryId } = req.params;
 
-    const existingBooking = await Booking.findOne({
-      userId: req.user.id,
-      itineraryId,
-      tripStatus: { $ne: "cancelled" },
-    });
-
-    res.status(200).json({
-      success: true,
-      alreadyBooked: !!existingBooking,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
 const declineBookingActivity = async (req, res) => {
   try {
     const { bookingId, activityId } = req.params;
@@ -173,7 +236,8 @@ const declineBookingActivity = async (req, res) => {
 module.exports = {
   createBooking,
   getMyBookings,
+  confirmBooking,
   confirmBookingActivity,
   declineBookingActivity,
-  checkBookingStatus
+  checkBookingStatus,
 };

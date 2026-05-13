@@ -34,7 +34,7 @@ export default function PriceCard({ price, onBook, alreadyBooked }: PriceCardPro
 
   {alreadyBooked
     ? "Already Booked"
-    : "Book This Experience"}
+    : "Add to My Trip"}
 </button>
     </div>
   );
