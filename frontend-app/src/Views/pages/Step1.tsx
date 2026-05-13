@@ -209,14 +209,14 @@ export default function Step1() {
                         className="custom-slider w-full cursor-pointer"
                         type="range"
                         min={1}
-                        max={60}
+                        max={8}
                         value={days}
                         onChange={(e) => setDays(Number(e.target.value))}
                       />
                       <div className="mt-4 flex justify-between text-[11px] font-bold uppercase tracking-wide text-muted">
                         <span>1 DAY</span>
-                        <span>30 DAYS</span>
-                        <span>60+ DAYS</span>
+                        <span>4 DAYS</span>
+                        <span>8 DAYS</span>
                       </div>
                     </div>
                   </div>

@@ -12,9 +12,9 @@ export function HeroSearch() {
           </p>
 
           <h1 className="font-serif text-5xl md:text-6xl xl:text-7xl font-black tracking-tight font-normal text-slate-900 mb-6">
-            Lebanon, Tailored for
+            Lebanon, Tailored 
             <br />
-            the{" "}
+           for the{" "}
             <span className="italic font-serif text-red-900">
               Discerning
             </span>{" "}

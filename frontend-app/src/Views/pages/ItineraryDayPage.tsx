@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { apiRequest } from "../../services/api";
 import type { Itinerary, ItineraryDay } from "../../models/itinerary.model";
 
-
 import DayHeaderCard from "../itinerary/days/DayHeaderCard";
 import DaySummaryCard from "../itinerary/days/DaySummaryCard";
 import DayActivityTimeline from "../itinerary/days/DayActivityTimeline";
@@ -25,21 +24,32 @@ export default function ItineraryDayPage() {
   const [itinerary, setItinerary] = useState<Itinerary | null>(null);
   const [day, setDay] = useState<ItineraryDay | null>(null);
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     const fetchDay = async () => {
       try {
         if (!slug || !dayNumber) return;
 
-        const data = await apiRequest<OfferWithItineraryResponse>(
-          `/offers/${slug}`
-        );
+        let fetchedItinerary: Itinerary | null = null;
 
-        const fetchedItinerary = data.offer.itineraryId;
+        try {
+          const offerData = await apiRequest<OfferWithItineraryResponse>(
+            `/offers/${slug}`,
+          );
+
+          fetchedItinerary = offerData.offer.itineraryId;
+        } catch {
+          const itineraryData = await apiRequest<{
+            success: boolean;
+            itinerary: Itinerary;
+          }>(`/itineraries/slug/${slug}`);
+
+          fetchedItinerary = itineraryData.itinerary;
+        }
+
         const selectedDay = fetchedItinerary.days.find(
-  (item) => item.dayNumber === Number(dayNumber)
-);
+          (item) => item.dayNumber === Number(dayNumber),
+        );
 
         setItinerary(fetchedItinerary);
         setDay(selectedDay || null);
@@ -49,7 +59,6 @@ export default function ItineraryDayPage() {
         setLoading(false);
       }
     };
-
     fetchDay();
   }, [slug, dayNumber]);
 
@@ -66,9 +75,7 @@ export default function ItineraryDayPage() {
   if (!itinerary || !day) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--bg-light)]">
-        <p className="font-semibold text-[var(--text-dark)]">
-          Day not found.
-        </p>
+        <p className="font-semibold text-[var(--text-dark)]">Day not found.</p>
       </div>
     );
   }
@@ -76,13 +83,12 @@ export default function ItineraryDayPage() {
   const totalDuration =
     day.activities?.reduce(
       (sum, activity) => sum + (activity.durationHours || 0),
-      0
+      0,
     ) || 0;
 
   function fetchDay(): void {
     throw new Error("Function not implemented.");
   }
-  
 
   return (
     <div className="min-h-screen bg-[var(--bg-light)]">
@@ -95,7 +101,11 @@ export default function ItineraryDayPage() {
         />
 
         <DayHeaderCard
-          imageUrl={day.activities?.[0]?.imageUrl || itinerary.coverImage || "/images/sunset.png"}
+          imageUrl={
+            day.activities?.[0]?.imageUrl ||
+            itinerary.coverImage ||
+            "/images/sunset.png"
+          }
           tripName={itinerary.title}
           dayNumber={day.dayNumber}
           title={day.title}
@@ -111,31 +121,33 @@ export default function ItineraryDayPage() {
         />
 
         <DayActivityTimeline
-  itineraryId={itinerary._id}
-  onRefresh={fetchDay}
-  activities={(day.activities || []).map((activity) => ({
-    activityId: activity._id || "",
-    time: activity.time || "",
-    title: activity.title,
-    description: activity.description || "",
-    imageUrl: activity.imageUrl || "/images/sunset.png",
-    location: activity.location || "Lebanon",
-    region: activity.region,
-    durationHours: activity.durationHours || 0,
-    activityType: activity.activityType || "Experience",
-    estimatedPrice: activity.estimatedPrice || 0,
-    reservationReference: activity.booking?.reservationReference || "N/A",
-    reservationStatus: activity.booking?.reservationStatus || "pending",
-    reservedFor: activity.booking?.reservedFor || 2,
-    placeName: activity.booking?.contactInfo?.placeName || activity.title,
-    phone: activity.booking?.contactInfo?.phone || "Not available",
-    whatsapp: activity.booking?.contactInfo?.whatsapp,
-    instagram: activity.booking?.contactInfo?.instagram,
-    website: activity.booking?.contactInfo?.website,
-    meetingPoint: activity.location || "Meeting point to be confirmed",
-    note: "Final confirmation will be shared before the trip.",
-  }))}
-/>
+          itineraryId={itinerary._id}
+          onRefresh={fetchDay}
+          activities={(day.activities || []).map((activity) => ({
+            activityId: activity._id || "",
+            time: activity.time || "",
+            title: activity.title,
+            description: activity.description || "",
+            imageUrl: activity.imageUrl || "/images/sunset.png",
+            location: activity.location || "Lebanon",
+            region: activity.region,
+            durationHours: activity.durationHours || 0,
+            activityType: activity.activityType || "Experience",
+            estimatedPrice: activity.estimatedPrice || 0,
+            reservationReference:
+              activity.booking?.reservationReference || "N/A",
+            reservationStatus: activity.booking?.reservationStatus || "pending",
+            reservedFor: activity.booking?.reservedFor || 2,
+            placeName:
+              activity.booking?.contactInfo?.placeName || activity.title,
+            phone: activity.booking?.contactInfo?.phone || "Not available",
+            whatsapp: activity.booking?.contactInfo?.whatsapp,
+            instagram: activity.booking?.contactInfo?.instagram,
+            website: activity.booking?.contactInfo?.website,
+            meetingPoint: activity.location || "Meeting point to be confirmed",
+            note: "Final confirmation will be shared before the trip.",
+          }))}
+        />
       </main>
     </div>
   );

@@ -1,5 +1,5 @@
 const Booking = require("../models/Booking");
-const Itinerary = require("../models/Itinerary");
+const Itinerary = require("../models/itinerary.js");
 
 const createBooking = async (req, res) => {
   try {

@@ -66,15 +66,12 @@ export default function UpcomingTripsSection({
                 key={booking.id}
                 title={itinerary.title}
                 location={itinerary.mainPlaces?.join(", ") || "Lebanon"}
-                dateRange={formatDateRange(
-                  booking.startDate,
-                  booking.endDate
-                )}
+                dateRange={formatDateRange(booking.startDate, booking.endDate)}
                 days={itinerary.durationDays || 0}
-                totalCost={booking.totalPrice || itinerary.estimatedTotalPrice || 0}
-                slug={
-                        itinerary.slug?.replace("-itinerary", "") || ""
-                      }
+                totalCost={
+                  booking.totalPrice || itinerary.estimatedTotalPrice || 0
+                }
+                slug={itinerary.slug || ""}
                 imageUrl={itinerary.coverImage || "/images/sunset.png"}
               />
             );

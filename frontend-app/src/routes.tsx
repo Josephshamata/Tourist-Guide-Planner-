@@ -38,10 +38,13 @@ export default function AppRoutes() {
             path="/experiences/:slug/day/:dayNumber"
             element={<ItineraryDayPage />}
           />
+          
           <Route path="/my-trip" element={<MyTripPage />} />
           <Route path="/budget" element={<BudgetManagementPage />} />
           <Route path="/experiences" element={<ExperiencesPage />} />
           <Route path="/experiences/:slug" element={<ItineraryPage />} />
+          <Route path="/Generated-Trip/:slug" element={<ItineraryPage />} />
+          
           
         </Route>
 
@@ -52,7 +55,7 @@ export default function AppRoutes() {
         <Route path="/step5" element={<Step5 />} />
         <Route path="/step6" element={<Step6 />} />
       </Route>
-      <Route path="/pdf" element={<ItineraryPdfPreview />} />
+  
       
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />

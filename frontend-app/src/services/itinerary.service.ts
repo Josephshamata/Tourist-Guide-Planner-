@@ -35,3 +35,13 @@ export const createItinerary = async (
 
   return response.itinerary;
 };
+
+export const getItineraryBySlug = async (
+  slug: string
+): Promise<Itinerary> => {
+  const response = await apiRequest<ItineraryApiResponse>(
+    `/itineraries/slug/${slug}`
+  );
+
+  return response.itinerary;
+};

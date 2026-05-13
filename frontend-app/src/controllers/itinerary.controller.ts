@@ -3,6 +3,7 @@ import {
   getItineraryById,
   getAllItineraries,
   createItinerary,
+  getItineraryBySlug,
 } from "../services/itinerary.service";
 import type { Itinerary } from "../models/itinerary.model";
 
@@ -90,4 +91,29 @@ export const useCreateItinerary = () => {
     loading,
     error,
   };
+};
+export const useItineraryBySlug = (slug?: string) => {
+  const [itinerary, setItinerary] = useState<Itinerary | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!slug) return;
+
+    const fetchItinerary = async () => {
+      try {
+        setLoading(true);
+        const data = await getItineraryBySlug(slug);
+        setItinerary(data);
+      } catch {
+        setError("Failed to fetch itinerary");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItinerary();
+  }, [slug]);
+
+  return { itinerary, loading, error };
 };

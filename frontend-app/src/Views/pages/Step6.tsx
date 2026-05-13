@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/steps/Navbar";
 import StepHeader from "../components/steps/StepHeader";
 import { getTripPreferences, saveTripPreferences } from "../../tripPreferences";
+import { generateAIItinerary } from "../../services/ai.service";
 
 type Service = "driver" | "hotel" | "guide" | "airport" | "vip";
 
@@ -55,24 +56,29 @@ export default function Step6() {
         : [...prev, service],
     );
   };
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
 
-  const handleSubmit = () => {
-    saveTripPreferences({
-      requestedServices: services,
-    });
+      saveTripPreferences({
+        requestedServices: services,
+      });
 
-    const finalPreferences = getTripPreferences();
+      const finalPreferences = getTripPreferences();
 
-    console.log("FINAL AI DATA:", finalPreferences);
+      const itinerary = await generateAIItinerary(finalPreferences);
 
-    navigate("/loading");
+      navigate(`/Generated-Trip/${itinerary.slug}`);
+    } catch (error) {
+      console.error("Failed to generate AI itinerary:", error);
+    } finally {
+      setLoading(false);
+    }
   };
-
   return (
     <div className="min-h-screen bg-background-light font-sans text-[#1b100d]">
-      <Navbar
-
-      />
+      <Navbar />
 
       <div className="mx-auto w-full max-w-5xl">
         <StepHeader
@@ -139,11 +145,16 @@ export default function Step6() {
                   <button
                     type="button"
                     onClick={handleSubmit}
-                    className="mt-4 flex cursor-pointer items-center justify-center gap-3 rounded-full bg-white px-8 py-4 text-lg font-bold text-primary shadow-lg transition-all hover:scale-[1.05] active:scale-[0.98]"
+                    disabled={loading}
+                    className="mt-4 flex cursor-pointer items-center justify-center gap-3 rounded-full bg-white px-8 py-4 text-lg font-bold text-primary shadow-lg transition-all hover:scale-[1.05] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    <span>Generate My Lebanon Experience</span>
+                    <span>
+                      {loading
+                        ? "Generating your trip..."
+                        : "Generate My Lebanon Experience"}
+                    </span>
                     <span className="material-symbols-outlined">
-                      auto_awesome
+                      {loading ? "hourglass_top" : "auto_awesome"}
                     </span>
                   </button>
                 </div>

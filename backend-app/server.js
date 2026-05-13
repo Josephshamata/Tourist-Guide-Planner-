@@ -8,7 +8,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const offerRoutes = require("./routes/offerRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const itineraryRoutes = require("./routes/itineraryRoutes");
-
+const aiRoutes = require("./routes/aiRoutes");
 const session = require("express-session");
 const passport = require("passport");
 require("./config/passport");
@@ -41,6 +41,7 @@ app.use("/api/events", eventRoutes);
 app.use("/api/offers", offerRoutes);
 app.use("/api/itineraries", itineraryRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on http://localhost:5000");

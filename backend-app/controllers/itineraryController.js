@@ -1,4 +1,4 @@
-const Itinerary = require("../models/Itinerary");
+const Itinerary = require("../models/itinerary");
 
 const createItinerary = async (req, res) => {
   try {
@@ -46,6 +46,60 @@ const getItineraryById = async (req, res) => {
     res.status(200).json({
       success: true,
       itinerary,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getItineraryBySlug = async (req, res) => {
+  try {
+    const itinerary = await Itinerary.findOne({
+      slug: req.params.slug,
+    });
+
+    if (!itinerary) {
+      return res.status(404).json({
+        success: false,
+        message: "Itinerary not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      itinerary,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getMyTrips = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const itineraries = await Itinerary.find({ userId }).sort({
+      startDate: 1,
+    });
+
+    const upcomingTrips = itineraries.filter(
+      (trip) => trip.tripStatus === "upcoming",
+    );
+
+    const completedTrips = itineraries.filter(
+      (trip) => trip.tripStatus === "completed",
+    );
+
+    res.status(200).json({
+      success: true,
+      upcomingTrips,
+      completedTrips,
     });
   } catch (error) {
     res.status(500).json({
@@ -104,34 +158,7 @@ const confirmActivity = async (req, res) => {
     });
   }
 };
-const getMyTrips = async (req, res) => {
-  try {
-    const userId = req.user._id;
 
-    const itineraries = await Itinerary.find({ userId }).sort({
-      startDate: 1,
-    });
-
-    const upcomingTrips = itineraries.filter(
-      (trip) => trip.tripStatus === "upcoming"
-    );
-
-    const completedTrips = itineraries.filter(
-      (trip) => trip.tripStatus === "completed"
-    );
-
-    res.status(200).json({
-      success: true,
-      upcomingTrips,
-      completedTrips,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
 const declineActivity = async (req, res) => {
   try {
     const { itineraryId, activityId } = req.params;
@@ -181,6 +208,8 @@ module.exports = {
   createItinerary,
   getAllItineraries,
   getItineraryById,
+  getItineraryBySlug,
+  getMyTrips,
   confirmActivity,
   declineActivity,
 };

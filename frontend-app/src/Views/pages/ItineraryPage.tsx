@@ -41,16 +41,28 @@ export default function ItineraryPage() {
       try {
         if (!slug) return;
 
-        const data = await apiRequest<OfferWithItineraryResponse>(
-          `/offers/${slug}`
-        );
+        let fetchedItinerary: Itinerary | null = null;
 
-        const fetchedItinerary = data.offer.itineraryId;
+        try {
+          const offerData = await apiRequest<OfferWithItineraryResponse>(
+            `/offers/${slug}`,
+          );
+
+          fetchedItinerary = offerData.offer.itineraryId;
+        } catch (offerError) {
+          const itineraryData = await apiRequest<{
+            success: boolean;
+            itinerary: Itinerary;
+          }>(`/itineraries/slug/${slug}`);
+
+          fetchedItinerary = itineraryData.itinerary;
+        }
+
         setItinerary(fetchedItinerary);
 
         if (fetchedItinerary?._id) {
           const bookingCheck = await apiRequest<BookingCheckResponse>(
-            `/bookings/check/${fetchedItinerary._id}`
+            `/bookings/check/${fetchedItinerary._id}`,
           );
 
           setAlreadyBooked(bookingCheck.alreadyBooked);
@@ -85,7 +97,9 @@ export default function ItineraryPage() {
       navigate("/my-trip");
     } catch (error) {
       console.error("Failed to book experience:", error);
-      alert(error instanceof Error ? error.message : "Failed to book experience");
+      alert(
+        error instanceof Error ? error.message : "Failed to book experience",
+      );
     } finally {
       setBookingLoading(false);
     }
@@ -132,7 +146,7 @@ export default function ItineraryPage() {
           {activeTab === "itinerary" && (
             <TripDaysList
               itinerarySlug={slug || ""}
-                itinerary={itinerary}
+              itinerary={itinerary}
               days={itinerary.days || []}
             />
           )}
@@ -145,7 +159,9 @@ export default function ItineraryPage() {
 
               <ul className="mt-8 space-y-4 text-lg text-[var(--text-dark)]/70">
                 {itinerary.services?.airportPickup && <li>✔ Airport Pickup</li>}
-                {itinerary.services?.driverIncluded && <li>✔ Private Driver</li>}
+                {itinerary.services?.driverIncluded && (
+                  <li>✔ Private Driver</li>
+                )}
                 {itinerary.services?.tourGuideIncluded && <li>✔ Tour Guide</li>}
                 {itinerary.services?.vipAccess && <li>✔ VIP Access</li>}
 
@@ -208,10 +224,20 @@ export default function ItineraryPage() {
               </h2>
 
               <div className="mt-8 space-y-6 text-[var(--text-dark)]/70">
-                <p>• Final booking confirmation will be sent to the traveler.</p>
-                <p>• Some reservations may remain pending until the place confirms.</p>
-                <p>• Estimated costs may vary slightly depending on availability.</p>
-                <p>• Partner contacts are shown inside each day’s activity details.</p>
+                <p>
+                  • Final booking confirmation will be sent to the traveler.
+                </p>
+                <p>
+                  • Some reservations may remain pending until the place
+                  confirms.
+                </p>
+                <p>
+                  • Estimated costs may vary slightly depending on availability.
+                </p>
+                <p>
+                  • Partner contacts are shown inside each day’s activity
+                  details.
+                </p>
               </div>
             </div>
           )}
