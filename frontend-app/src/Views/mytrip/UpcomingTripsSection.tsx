@@ -1,7 +1,31 @@
 import { CalendarDays, ChevronRight } from "lucide-react";
-import TripCard from "./TripCard";
 
-export default function UpcomingTripsSection() {
+import TripCard from "./TripCard";
+import type { Booking } from "../../models/booking.model";
+
+type UpcomingTripsSectionProps = {
+  bookings: Booking[];
+};
+
+function formatDateRange(startDate?: string, endDate?: string) {
+  if (!startDate || !endDate) return "Dates not selected";
+
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  return `${start.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  })} – ${end.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })}`;
+}
+
+export default function UpcomingTripsSection({
+  bookings,
+}: UpcomingTripsSectionProps) {
   return (
     <section className="rounded-[2rem] border border-[var(--border)] bg-white p-8 shadow-soft-red">
       <div className="mb-7 flex items-start justify-between gap-6">
@@ -22,27 +46,41 @@ export default function UpcomingTripsSection() {
         </button>
       </div>
 
-      <div className="space-y-5">
-        <TripCard
-          title="The Socialite"
-          location="Beirut, Lebanon"
-          dateRange="May 24 – May 26, 2025"
-          days={3}
-          totalCost={600}
-          slug="the-socialite"
-          imageUrl="/images/sunset.png"
-        />
+      {bookings.length === 0 ? (
+        <div className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--bg-light)] p-8 text-center">
+          <h3 className="text-xl font-extrabold text-[var(--text-dark)]">
+            No upcoming trips yet
+          </h3>
 
-        <TripCard
-          title="Cedars Adventure Weekend"
-          location="Bcharre, Lebanon"
-          dateRange="Jun 10 – Jun 12, 2025"
-          days={3}
-          totalCost={430}
-          slug="cedars-adventure-weekend"
-          imageUrl="/images/cedars.png"
-        />
-      </div>
+          <p className="mt-2 text-sm text-[var(--text-dark)]/60">
+            Book an experience and it will appear here.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-5">
+          {bookings.map((booking) => {
+            const itinerary = booking.itineraryId;
+
+            return (
+              <TripCard
+                key={booking.id}
+                title={itinerary.title}
+                location={itinerary.mainPlaces?.join(", ") || "Lebanon"}
+                dateRange={formatDateRange(
+                  booking.startDate,
+                  booking.endDate
+                )}
+                days={itinerary.durationDays || 0}
+                totalCost={booking.totalPrice || itinerary.estimatedTotalPrice || 0}
+                slug={
+                        itinerary.slug?.replace("-itinerary", "") || ""
+                      }
+                imageUrl={itinerary.coverImage || "/images/sunset.png"}
+              />
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }
